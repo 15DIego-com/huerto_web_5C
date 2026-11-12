@@ -1,0 +1,213 @@
+/* ==========================================================
+   HUERTO WEB · V2 — Estilos base compartidos
+   Se enlaza en TODAS las páginas antes del CSS de cada una.
+   ========================================================== */
+
+/* ---------- Variables de diseño ---------- */
+:root {
+  /* Colores */
+  --hw-bosque: #0E2419;        /* fondo oscuro principal */
+  --hw-bosque-2: #163324;      /* tarjetas sobre fondo oscuro */
+  --hw-bosque-3: #1E4430;      /* detalles */
+  --hw-linea: #2B4D3A;         /* bordes sobre oscuro */
+  --hw-lima: #C8F169;          /* acento principal */
+  --hw-tomate: #FF6B3D;        /* acento secundario */
+  --hw-rojo: #D8341F;
+  --hw-crema: #F3EFE4;         /* tarjetas claras */
+  --hw-arena: #EAE5D7;         /* fondo claro (panel) */
+  --hw-cielo: #7FC3FF;         /* repartidor / info */
+
+  --hw-texto: #EEF3E8;         /* texto sobre oscuro */
+  --hw-texto-suave: #B8C9BA;   /* texto secundario sobre oscuro */
+  --hw-texto-oscuro: #0E2419;  /* texto sobre claro */
+  --hw-texto-oscuro-suave: #3F5546;
+
+  /* Tipografía */
+  --hw-fuente: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Medidas */
+  --hw-ancho-max: 1360px;
+  --hw-margen: clamp(16px, 4vw, 48px);
+  --hw-radio-lg: 36px;
+  --hw-radio-md: 28px;
+  --hw-radio-sm: 18px;
+}
+
+/* ---------- Reinicio básico ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--hw-fuente);
+  background: var(--hw-bosque);
+  color: var(--hw-texto);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------- Contenedor centrado ---------- */
+.hw-contenedor {
+  max-width: var(--hw-ancho-max);
+  margin: 0 auto;
+  padding: 0 var(--hw-margen);
+}
+
+/* ---------- Logo ---------- */
+.hw-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--hw-texto);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.hw-logo img {
+  width: 34px;
+  height: 34px;
+}
+
+.hw-logo b {
+  color: var(--hw-lima);
+  font-weight: 800;
+}
+
+/* ---------- Botones ---------- */
+.hw-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  font-family: var(--hw-fuente);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.hw-btn:hover {
+  transform: translateY(-2px);
+}
+
+.hw-btn:focus-visible {
+  outline: 3px solid var(--hw-lima);
+  outline-offset: 3px;
+}
+
+.hw-btn--lima {
+  background: var(--hw-lima);
+  color: var(--hw-texto-oscuro);
+}
+
+.hw-btn--lima:hover {
+  background: #D8FF85;
+}
+
+.hw-btn--contorno {
+  border-color: #3A5A47;
+  color: var(--hw-texto);
+  background: transparent;
+}
+
+.hw-btn--contorno:hover {
+  border-color: var(--hw-lima);
+}
+
+.hw-btn--oscuro {
+  background: var(--hw-bosque);
+  color: var(--hw-lima);
+}
+
+.hw-btn--grande {
+  min-height: 60px;
+  padding: 0 30px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.hw-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---------- Etiqueta tipo "pastilla" ---------- */
+.hw-pastilla {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--hw-bosque-2);
+  color: var(--hw-lima);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.hw-pastilla svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------- Títulos de sección ---------- */
+.hw-titulo-seccion {
+  font-size: clamp(40px, 5vw, 72px);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+/* ---------- Animación de aparición al hacer scroll ----------
+   Solo se ocultan si el JS cargó (clase hw-js en <html>).
+   Sin JS, todo se ve normal. */
+.hw-js .hw-aparecer {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.hw-js .hw-aparecer.hw-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Si el usuario prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .hw-js .hw-aparecer {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
