@@ -1,0 +1,275 @@
+/* ==========================================================
+   HUERTO WEB · V2 — Estructura compartida de la app del dueño
+   (menú lateral en computadora / barra inferior en celular)
+   Lo usan: inicio, inventario, calendario, perfil.
+   Orden de carga: Bootstrap → v2-base.css → v2-app.css → CSS de la página
+   ========================================================== */
+
+/* ===== Variables antiguas =====
+   Algunos CSS viejos (como pedidos.css) usan estas variables.
+   Se redefinen con la paleta V2 para que combinen sin cambiarlos. */
+:root {
+    --verde-oscuro: #0E2419;
+    --oliva: #2F6B45;
+    --verde-resumen: #C8F169;
+    --verde-check: #2F8A3B;
+    --fondo-inicio: #EAE5D7;
+    --crema: #FFFFFF;
+    --fondo-pagina: #EAE5D7;
+}
+
+/* ===== Página ===== */
+.in-body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: block;
+    background: var(--hw-arena);
+    color: var(--hw-texto-oscuro);
+    font-family: var(--hw-fuente);
+}
+
+.in-app {
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+}
+
+/* Columna de contenido de cada página */
+.in-contenido {
+    flex: 999 1 560px;
+    min-width: 0;
+    max-width: none;
+    min-height: 0;
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+/* Lo que los JS oculten con "hidden" debe quedar oculto */
+.in-contenido [hidden] {
+    display: none !important;
+}
+
+/* ==========================================================
+   MENÚ LATERAL
+   ========================================================== */
+.in-lateral {
+    flex: 0 0 248px;
+    position: sticky;
+    top: 16px;
+    min-height: calc(100vh - 32px);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding: 26px 16px;
+    border-radius: 32px;
+    background: var(--hw-bosque);
+    color: var(--hw-texto);
+}
+
+.in-logo {
+    padding: 0 8px;
+}
+
+/* La barra de navegación ahora es vertical */
+.barra-nav {
+    position: static;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.nav-item {
+    flex: none;
+    max-width: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    min-height: 50px;
+    padding: 0 14px;
+    border-radius: 16px;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 600;
+    color: #A7BBA9;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.nav-item i {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.nav-item:hover {
+    background: var(--hw-bosque-2);
+    color: var(--hw-texto);
+}
+
+.nav-item--activo,
+.nav-item--activo:hover {
+    background: var(--hw-bosque-2);
+    color: var(--hw-texto);
+}
+
+.nav-item--activo i {
+    color: var(--hw-lima);
+}
+
+.nav-item:focus-visible {
+    outline: 3px solid var(--hw-lima);
+    outline-offset: 2px;
+}
+
+/* Tarjeta del usuario abajo del menú */
+.in-usuario {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 22px;
+    background: var(--hw-bosque-2);
+    text-decoration: none;
+    color: var(--hw-texto);
+    transition: background-color 0.15s ease;
+}
+
+.in-usuario:hover {
+    background: var(--hw-bosque-3);
+    color: var(--hw-texto);
+}
+
+.in-usuario-inicial {
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--hw-tomate);
+    color: var(--hw-texto-oscuro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+.in-usuario-texto {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.in-usuario-texto strong {
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.in-usuario-texto span {
+    font-size: 13px;
+    color: #A7BBA9;
+}
+
+/* ===== Encabezado de página (título grande + subtítulo) ===== */
+.in-pagina-cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 8px 4px;
+}
+
+.in-pagina-titulo {
+    margin: 0;
+    font-family: var(--hw-fuente);
+    font-size: clamp(36px, 4.4vw, 60px);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--hw-texto-oscuro);
+}
+
+.in-pagina-sub {
+    margin: 6px 0 0;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+/* ==========================================================
+   RESPONSIVO: el menú lateral se vuelve barra inferior
+   ========================================================== */
+@media (max-width: 900px) {
+    .in-app {
+        padding: 12px 12px 104px;
+        gap: 12px;
+    }
+
+    /* El aside "desaparece" y solo queda su barra */
+    .in-lateral {
+        display: contents;
+    }
+
+    .in-logo,
+    .in-usuario {
+        display: none;
+    }
+
+    .barra-nav {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        z-index: 1000;
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 4px;
+        padding: 8px;
+        border-radius: 26px;
+        background: var(--hw-bosque);
+        box-shadow: 0 10px 30px rgba(14, 36, 25, 0.3);
+    }
+
+    .nav-item {
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        min-height: 60px;
+        padding: 6px 0;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .nav-item--activo,
+    .nav-item--activo:hover {
+        background: var(--hw-lima);
+        color: var(--hw-texto-oscuro);
+    }
+
+    .nav-item--activo i {
+        color: var(--hw-texto-oscuro);
+    }
+
+    .in-contenido {
+        flex-basis: 100%;
+    }
+}
