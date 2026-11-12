@@ -1,0 +1,1049 @@
+/* ==========================================================
+   HUERTO WEB · V2 — Repartidor (paginas/repartidor.html)
+   Orden de carga: Leaflet → v2-base.css → este
+   Se conservan las clases que usan JS/repartidor.js y
+   JS/repartidor-mapa.js (tarjetas .entrega, .insignia, .rep-grupo,
+   pines .rep-pin, ventanita .rep-popup, estado del mapa, etc.).
+   OJO: repartidor-mapa.js reemplaza toda la clase de #mapa-estado.
+   ========================================================== */
+
+:root {
+    /* Colores por estado de la entrega */
+    --rp-atrasado: #C0392B;
+    --rp-hoy: #FF6B3D;
+    --rp-manana: #E0A419;
+    --rp-programado: #2F7FB8;
+    --rp-entregado: #2F8A3B;
+    --rp-huerto: #3A973A;
+}
+
+/* Que "hidden" siempre oculte */
+[hidden] {
+    display: none !important;
+}
+
+/* ===== Página ===== */
+.rp-body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--hw-arena);
+    color: var(--hw-texto-oscuro);
+    font-family: var(--hw-fuente);
+}
+
+/* ==========================================================
+   BARRA SUPERIOR
+   ========================================================== */
+.rep-encabezado {
+    position: sticky;
+    top: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 0;
+    padding: 14px clamp(16px, 2.4vw, 28px);
+    background: var(--hw-bosque);
+    color: var(--hw-texto);
+    box-shadow: 0 6px 20px rgba(14, 36, 25, 0.18);
+}
+
+.rp-top__izq {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: none;
+}
+
+.rp-logo {
+    font-size: 20px;
+}
+
+.rep-rol {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--hw-tomate);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--hw-texto-oscuro);
+}
+
+.rep-saludo {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--hw-fuente);
+    font-size: clamp(20px, 2vw, 26px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--hw-texto);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rep-salir {
+    flex: none;
+    min-height: 46px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 18px;
+    border: 1.5px solid var(--hw-linea);
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--hw-fuente);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--hw-texto);
+    cursor: pointer;
+    box-shadow: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.rep-salir i {
+    font-size: 18px;
+}
+
+.rep-salir:hover {
+    border-color: #E05A4A;
+    background: #8F1F12;
+    color: #ffffff;
+}
+
+.rep-salir:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 3px;
+}
+
+/* ==========================================================
+   DISTRIBUCIÓN: mapa a la izquierda, entregas a la derecha
+   ========================================================== */
+.rep {
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+    background: transparent;
+    box-shadow: none;
+}
+
+.rp-col {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.rp-col--mapa {
+    flex: 3 1 560px;
+    position: sticky;
+    top: 90px; /* debajo de la barra superior */
+}
+
+.rp-col--lista {
+    flex: 2 1 380px;
+}
+
+/* ==========================================================
+   MAPA
+   ========================================================== */
+.rep-mapa {
+    height: calc(100vh - 106px);
+    min-height: 560px;
+    max-height: 920px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 14px;
+    border-radius: 32px;
+    background: var(--hw-bosque);
+    color: var(--hw-texto);
+    box-shadow: none;
+}
+
+.rep-mapa__cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0;
+    padding: 6px 8px 0;
+}
+
+.rep-mapa__titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--hw-texto);
+}
+
+.rep-mapa__titulo i {
+    color: var(--hw-tomate);
+}
+
+.rep-mapa__cuenta {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--hw-tomate);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--hw-texto-oscuro);
+}
+
+.rep-mapa__lienzo {
+    position: relative;
+    z-index: 0;
+    flex: 1;
+    min-height: 300px;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #DCE6D0;
+}
+
+/* Controles de Leaflet con el estilo V2 */
+.rep-mapa__lienzo .leaflet-bar,
+.rep-mapa__lienzo .leaflet-control-layers {
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(14, 36, 25, 0.2);
+}
+
+.rep-mapa__lienzo .leaflet-bar a {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    color: var(--hw-texto-oscuro);
+}
+
+.rep-mapa__pie {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 6px 4px;
+}
+
+/* Leyenda */
+.rep-leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--hw-texto-suave);
+}
+
+.rep-leyenda li {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.rep-leyenda__punto {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+
+.rep-leyenda__punto--atrasado   { background: var(--rp-atrasado); }
+.rep-leyenda__punto--hoy        { background: var(--rp-hoy); }
+.rep-leyenda__punto--manana     { background: var(--rp-manana); }
+.rep-leyenda__punto--programado { background: var(--rp-programado); }
+
+.rep-leyenda__punto--huerto {
+    background: var(--rp-huerto);
+    box-shadow: 0 0 0 2px #ffffff;
+}
+
+/* Estado del mapa (lo reemplaza repartidor-mapa.js) */
+.rep-mapa__estado {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--hw-texto-suave);
+}
+
+.rep-mapa__estado::before {
+    content: "";
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-top: 6px;
+    border-radius: 50%;
+    background: var(--hw-texto-suave);
+}
+
+.rep-mapa__estado--ok {
+    color: var(--hw-texto);
+}
+
+.rep-mapa__estado--ok::before {
+    background: var(--hw-lima);
+    box-shadow: 0 0 0 4px rgba(200, 241, 105, 0.25);
+    animation: rp-latido 1.6s ease-in-out infinite;
+}
+
+.rep-mapa__estado--aviso {
+    color: #FFD9B8;
+}
+
+.rep-mapa__estado--aviso::before {
+    background: var(--hw-tomate);
+    box-shadow: 0 0 0 4px rgba(255, 107, 61, 0.25);
+}
+
+.rep-mapa__estado--error {
+    color: #FFC2B8;
+}
+
+.rep-mapa__estado--error::before {
+    background: #FF5A4A;
+}
+
+@keyframes rp-latido {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+}
+
+/* Botones del mapa */
+.rep-mapa__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.rep-btn-mapa {
+    flex: 1 1 auto;
+    min-height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 18px;
+    border: 1.5px solid var(--hw-linea);
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--hw-fuente);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--hw-texto);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.rep-btn-mapa:hover {
+    border-color: var(--hw-lima);
+    background: var(--hw-bosque-2);
+    opacity: 1;
+}
+
+.rep-btn-mapa:active {
+    transform: scale(0.98);
+}
+
+.rep-btn-mapa:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+.rep-btn-mapa:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 3px;
+}
+
+/* "Ruta de hoy": acción principal */
+.rep-btn-mapa--prim {
+    border-color: var(--hw-tomate);
+    background: var(--hw-tomate);
+    color: var(--hw-texto-oscuro);
+    font-weight: 800;
+}
+
+.rep-btn-mapa--prim:hover {
+    border-color: #FF8A63;
+    background: #FF8A63;
+}
+
+/* "Mi ubicación" activo (en vivo) */
+.rep-btn-mapa--activo,
+.rep-btn-mapa--activo:hover {
+    border-color: var(--hw-lima);
+    background: var(--hw-lima);
+    color: var(--hw-texto-oscuro);
+}
+
+/* Pines del mapa */
+.rep-pin {
+    background: none;
+    border: 0;
+}
+
+.rep-pin i {
+    display: block;
+    font-size: 34px;
+    line-height: 1;
+    filter: drop-shadow(0 3px 4px rgba(14, 36, 25, 0.45));
+}
+
+.rep-pin--atrasado i   { color: var(--rp-atrasado); }
+.rep-pin--hoy i        { color: var(--rp-hoy); }
+.rep-pin--manana i     { color: var(--rp-manana); }
+.rep-pin--programado i,
+.rep-pin--sinfecha i   { color: var(--rp-programado); }
+
+/* Ventanita al tocar un pin */
+.rep-mapa__lienzo .leaflet-popup-content-wrapper {
+    border-radius: 18px;
+}
+
+.rep-popup {
+    font-family: var(--hw-fuente);
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--hw-texto-oscuro);
+}
+
+.rep-popup strong {
+    font-size: 16px;
+}
+
+.rep-popup__cliente,
+.rep-popup__direccion {
+    font-weight: 500;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.rep-popup__enlace {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--hw-lima) !important;
+}
+
+/* ==========================================================
+   PROGRESO Y CONTADORES
+   ========================================================== */
+.rep-progreso {
+    margin: 0;
+    padding: 22px 24px;
+    border-radius: 28px;
+    background: var(--hw-lima);
+    color: var(--hw-texto-oscuro);
+}
+
+.rep-progreso__cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px 12px;
+    margin-bottom: 14px;
+}
+
+.rep-progreso__titulo {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.rep-progreso__texto {
+    font-size: 15px;
+    font-weight: 700;
+    color: #2E4A1A;
+    opacity: 1;
+}
+
+.rep-progreso__pista {
+    height: 16px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(14, 36, 25, 0.14);
+}
+
+/* El ancho lo pone repartidor.js */
+.rep-progreso__relleno {
+    width: 0;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    background-image: repeating-linear-gradient(-45deg,
+            transparent 0 8px,
+            rgba(200, 241, 105, 0.25) 8px 16px);
+    transition: width 0.5s ease;
+}
+
+.rep-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+}
+
+.rep-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 16px;
+    border-radius: 22px;
+    background: var(--hw-crema);
+    text-align: left;
+    box-shadow: none;
+}
+
+.rep-stat__icono {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 6px;
+    border-radius: 12px;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.rep-stat__icono--pendiente { background: var(--rp-hoy); color: var(--hw-texto-oscuro); }
+.rep-stat__icono--atrasado  { background: var(--rp-atrasado); }
+.rep-stat__icono--entregado { background: var(--hw-bosque); color: var(--hw-lima); }
+
+.rep-stat__numero {
+    margin: 0;
+    font-family: var(--hw-fuente);
+    font-size: 40px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--hw-texto-oscuro);
+}
+
+.rep-stat__texto {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+/* ==========================================================
+   FILTROS
+   ========================================================== */
+.rep-filtros {
+    display: flex;
+    gap: 6px;
+    margin: 0;
+    padding: 6px;
+    border-radius: 999px;
+    background: var(--hw-crema);
+}
+
+.rep-filtro {
+    flex: 1;
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 10px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--hw-fuente);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--hw-texto-oscuro);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.rep-filtro:hover {
+    background: #ffffff;
+}
+
+.rep-filtro--activo,
+.rep-filtro--activo:hover {
+    background: var(--hw-bosque);
+    color: var(--hw-texto);
+}
+
+.rep-filtro:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 2px;
+}
+
+.rep-filtro__cuenta {
+    min-width: 24px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(14, 36, 25, 0.1);
+    font-size: 13px;
+    text-align: center;
+}
+
+.rep-filtro--activo .rep-filtro__cuenta {
+    background: var(--hw-lima);
+    color: var(--hw-texto-oscuro);
+}
+
+/* ==========================================================
+   LISTA DE ENTREGAS (la crea repartidor.js)
+   ========================================================== */
+.rep-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Encabezados por fecha: "Atrasadas", "Para hoy"... */
+.rep-grupo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 6px 0;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.rep-grupo:first-child {
+    margin-top: 0;
+}
+
+.rep-grupo__cuenta {
+    min-width: 26px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: rgba(14, 36, 25, 0.1);
+    font-size: 13px;
+    text-align: center;
+    letter-spacing: 0;
+}
+
+.rep-grupo--atrasado {
+    color: var(--rp-atrasado);
+}
+
+.rep-grupo--atrasado .rep-grupo__cuenta {
+    background: var(--rp-atrasado);
+    color: #ffffff;
+}
+
+/* Tarjeta de entrega */
+.entrega {
+    --color-estado: var(--rp-hoy);
+
+    position: relative;
+    overflow: hidden;
+    padding: 18px 18px 18px 26px;
+    border: none;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: none;
+    animation: rp-aparecer 0.25s ease-out both;
+}
+
+/* Franja de color a la izquierda */
+.entrega::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    background: var(--color-estado);
+}
+
+.entrega--atrasada   { --color-estado: var(--rp-atrasado); }
+.entrega--hoy        { --color-estado: var(--rp-hoy); }
+.entrega--manana     { --color-estado: var(--rp-manana); }
+.entrega--programada { --color-estado: var(--rp-programado); }
+
+.entrega--entregada {
+    --color-estado: var(--rp-entregado);
+    background: #F3F7EE;
+    opacity: 1;
+}
+
+.entrega__cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.entrega__producto {
+    margin: 0;
+    font-family: var(--hw-fuente);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--hw-texto-oscuro);
+    word-break: break-word;
+}
+
+.entrega--entregada .entrega__producto {
+    color: #6B7C70;
+    text-decoration: line-through;
+}
+
+/* Etiquetas de estado */
+.insignia {
+    flex-shrink: 0;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.insignia--pendiente,
+.insignia--hoy        { background: #FFE3D3; color: #8A3A12; }
+.insignia--atrasado   { background: #FAD2CC; color: #8F1F12; }
+.insignia--manana     { background: #FBEFC8; color: #6E5200; }
+.insignia--programado { background: #D9EAF6; color: #1F5F8B; }
+.insignia--sinfecha   { background: #ECECEC; color: #555555; }
+.insignia--entregado  { background: #DDEFC4; color: #2E4A1A; }
+
+/* Datos: cliente, fecha, dirección, distancia */
+.entrega__datos {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.entrega__dato {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.entrega__dato i {
+    flex: none;
+    width: 18px;
+    font-size: 16px;
+    color: #2F6B45;
+}
+
+.entrega__dato--atrasada,
+.entrega__dato--atrasada i {
+    font-weight: 700;
+    color: var(--rp-atrasado);
+}
+
+/* Distancia: resaltada como "pastilla" */
+.entrega__dato--distancia {
+    align-self: flex-start;
+    padding: 4px 12px 4px 10px;
+    border-radius: 999px;
+    background: #E3EFF9;
+    font-weight: 700;
+    color: #1F5F8B;
+}
+
+.entrega__dato--distancia i {
+    color: #1F5F8B;
+}
+
+.entrega__dato--sin,
+.entrega__dato--sin i {
+    font-style: italic;
+    color: #8C9488;
+}
+
+/* Botones de cada entrega (grandes para el dedo) */
+.entrega__acciones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.entrega__boton {
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    font-family: var(--hw-fuente);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+a.entrega__boton {
+    text-decoration: none;
+}
+
+.entrega__boton:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+.entrega__boton:active {
+    transform: scale(0.98);
+}
+
+.entrega__boton:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 3px;
+}
+
+/* Cómo llegar */
+.entrega__boton--ruta {
+    border: none;
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+}
+
+.entrega__boton--ruta:hover {
+    color: #D8FF85;
+}
+
+/* Ver en mapa */
+.entrega__boton--mapa {
+    border: 1.5px solid #DDD6C3;
+    background: transparent;
+    color: var(--hw-texto-oscuro);
+}
+
+/* Marcar como entregado: la acción más importante */
+.entrega__boton--entregar {
+    min-height: 56px;
+    border: none;
+    background: var(--hw-lima);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--hw-texto-oscuro);
+}
+
+.entrega__boton--entregar:hover {
+    background: #D8FF85;
+}
+
+.entrega__boton--deshacer {
+    border: 1.5px solid #C9C1AC;
+    background: transparent;
+    color: var(--hw-texto-oscuro);
+}
+
+/* ===== Sin entregas ===== */
+.rep-vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 40px 20px;
+    border: 1.5px dashed #CFC8B5;
+    border-radius: 24px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.rep-vacio i {
+    font-size: 40px;
+    color: var(--hw-tomate);
+}
+
+/* ===== Aviso (toast) ===== */
+.aviso {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    z-index: 1300;
+    max-width: calc(100% - 32px);
+    padding: 14px 24px;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    box-shadow: 0 10px 30px rgba(14, 36, 25, 0.3);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--hw-lima);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 16px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.aviso--visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+@keyframes rp-aparecer {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* ==========================================================
+   RESPONSIVO
+   ========================================================== */
+@media (max-width: 1000px) {
+    /* Una sola columna: el mapa deja de ser fijo */
+    .rp-col--mapa {
+        position: static;
+        flex-basis: 100%;
+    }
+
+    .rp-col--lista {
+        flex-basis: 100%;
+    }
+
+    .rep-mapa {
+        height: auto;
+        min-height: 0;
+        max-height: none;
+    }
+
+    .rep-mapa__lienzo {
+        flex: none;
+        height: 380px;
+    }
+
+    /* En celular el progreso y los contadores van antes que el mapa */
+    .rep {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .rp-col--lista {
+        display: contents;
+    }
+
+    .rep-progreso { order: 1; }
+    .rep-stats    { order: 2; }
+    .rp-col--mapa { order: 3; }
+    .rep-filtros  { order: 4; }
+    .rep-lista    { order: 5; }
+    .rep-vacio    { order: 6; }
+}
+
+@media (max-width: 640px) {
+    .rep-encabezado {
+        flex-wrap: wrap;
+        gap: 10px 12px;
+        padding: 12px 14px;
+    }
+
+    .rp-logo .hw-logo-texto {
+        display: none;
+    }
+
+    .rep-saludo {
+        order: 3;
+        flex-basis: 100%;
+        text-align: left;
+        font-size: 22px;
+    }
+
+    .rep-salir {
+        margin-left: auto;
+    }
+
+    .rep-salir__texto {
+        display: none;
+    }
+
+    .rep-salir {
+        width: 46px;
+        padding: 0;
+        justify-content: center;
+    }
+
+    .rep {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .rep-mapa {
+        padding: 10px;
+        border-radius: 26px;
+    }
+
+    .rep-mapa__lienzo {
+        height: 320px;
+        border-radius: 18px;
+    }
+
+    .rep-mapa__titulo {
+        font-size: 18px;
+    }
+
+    .rep-progreso {
+        padding: 18px 20px;
+        border-radius: 24px;
+    }
+
+    .rep-progreso__titulo {
+        font-size: 22px;
+    }
+
+    .rep-stat {
+        padding: 12px;
+        border-radius: 18px;
+    }
+
+    .rep-stat__numero {
+        font-size: 30px;
+    }
+
+    .rep-stat__texto {
+        font-size: 12px;
+    }
+
+    .rep-filtro {
+        font-size: 14px;
+        gap: 6px;
+    }
+
+    .entrega {
+        padding: 16px 14px 16px 22px;
+    }
+
+    .entrega__producto {
+        font-size: 18px;
+    }
+}
