@@ -1,0 +1,53 @@
+/* ===== Ojito para mostrar / ocultar la contraseña ===== */
+
+/* Envoltura que pone juntos el campo y el botón */
+.campo-pass {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 4px;
+}
+
+.campo-pass > input {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+}
+
+/* Botón del ojito */
+.ver-pass {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #7a9a1e;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ver-pass:hover {
+    background-color: rgba(122, 154, 30, 0.12);
+}
+
+.ver-pass:focus-visible {
+    outline: 2px solid #9ccc50;
+    outline-offset: 2px;
+}
+
+.ver-pass svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Quitar el ojito propio de Edge para que no salgan dos */
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
