@@ -1,0 +1,349 @@
+/* ===== Tarjeta de pedidos ===== */
+.pedidos {
+    margin-bottom: 22px;
+    padding: 10px 12px;
+    background: var(--crema);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.pedidos__cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pedidos__titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+}
+
+.pedidos__contador {
+    min-width: 20px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--oliva);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-align: center;
+    color: #fff;
+}
+
+.pedidos__nuevo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--oliva);
+    font-size: 0.95rem;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.pedidos__nuevo:hover {
+    transform: scale(1.1);
+}
+
+.pedidos__nuevo[aria-expanded="true"] {
+    background: var(--verde-oscuro);
+    transform: rotate(90deg);
+}
+
+/* ===== Formulario ===== */
+.pedidos__form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #c9cfa8;
+    animation: pedidos-aparecer 0.25s ease;
+}
+
+.pedidos__fila {
+    display: flex;
+    gap: 8px;
+}
+
+.pedidos__campo {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.pedidos__campo span {
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #555;
+}
+
+.pedidos__campo input,
+.pedidos__campo select {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #d9deba;
+    border-radius: 10px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 0.74rem;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pedidos__campo input:focus,
+.pedidos__campo select:focus {
+    border-color: var(--oliva);
+    box-shadow: 0 0 0 3px rgba(138, 154, 18, 0.2);
+}
+
+.pedidos__campo .invalido {
+    border-color: #b3261e;
+}
+
+.pedidos__error {
+    margin: 0;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #b3261e;
+}
+
+.pedidos__botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.pedidos__btn {
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.2s;
+}
+
+.pedidos__btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+.pedidos__btn--prim {
+    border: none;
+    background: var(--verde-resumen);
+    color: #fff;
+}
+
+.pedidos__btn--sec {
+    border: 1px solid #b9bf97;
+    background: transparent;
+    color: #444;
+}
+
+/* ===== Lista (altura limitada con scroll para que no estorbe) ===== */
+.pedidos__lista {
+    max-height: 168px;
+    margin: 8px 0 0;
+    padding: 0 2px 0 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.pedido {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+}
+
+.pedido + .pedido {
+    border-top: 1px solid #ece9d2;
+}
+
+.pedido__check,
+.pedido__borrar {
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.pedido__check {
+    font-size: 1.25rem;
+    line-height: 1;
+    color: #a3a98c;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.pedido__check:hover {
+    transform: scale(1.12);
+}
+
+.pedido--entregado .pedido__check {
+    color: var(--verde-check);
+}
+
+.pedido__info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.pedido__producto {
+    overflow: hidden;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #222;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pedido__detalle {
+    overflow: hidden;
+    font-size: 0.64rem;
+    font-weight: 600;
+    color: #777;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pedido__detalle--atrasado {
+    color: #b3261e;
+}
+
+.pedido--entregado .pedido__producto {
+    color: #999;
+    text-decoration: line-through;
+}
+
+.pedido__borrar {
+    font-size: 0.95rem;
+    color: #b5b99c;
+    transition: color 0.2s;
+}
+
+.pedido__borrar:hover {
+    color: #b3261e;
+}
+
+/* ===== Sin pedidos ===== */
+.pedidos__vacio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 0;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #777;
+}
+
+.pedidos__vacio i {
+    font-size: 1.3rem;
+    color: var(--oliva);
+}
+
+@keyframes pedidos-aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* ===== Ubicación de entrega en el formulario ===== */
+.pedidos__ubicacion {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pedidos__mapa {
+    position: relative;
+    z-index: 0;
+    height: 190px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: #e9e9e9;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pedidos__mapa--error {
+    border-color: #b3261e;
+}
+
+.pedidos__mapa-estado {
+    margin: 0;
+    font-size: 0.64rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #666;
+}
+
+.pedidos__mapa-estado--ok {
+    color: var(--verde-resumen);
+}
+
+.pedidos__mapa-estado--aviso {
+    color: #a65a10;
+}
+
+.pedidos__mapa-estado--error {
+    color: #b3261e;
+}
+
+.pedidos__mapa-acciones {
+    display: flex;
+    gap: 6px;
+}
+
+.pedidos__btn--mapa {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 4px;
+    border: 1px solid #d9deba;
+    background: #fff;
+    font-size: 0.64rem;
+    color: var(--verde-oscuro);
+}
+
+.pedidos__btn--mapa:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+/* Ícono de pin en cada pedido de la lista */
+.pedido__ubicacion {
+    flex-shrink: 0;
+    font-size: 1rem;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--verde-resumen);
+    transition: transform 0.2s, color 0.2s;
+}
+
+.pedido__ubicacion:hover {
+    transform: scale(1.15);
+    color: var(--verde-oscuro);
+}

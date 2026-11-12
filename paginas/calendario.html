@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario | Huerto Web</title>
+
+    <!-- Tipografía V2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap e íconos primero -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- V2: base, menú compartido y el CSS de esta página -->
+    <link rel="stylesheet" href="../CSS/v2-base.css">
+    <link rel="stylesheet" href="../CSS/v2-app.css">
+    <link rel="stylesheet" href="../CSS/calendario-v2.css">
+    <link rel="icon" href="../imagenes/v2/logo.svg" type="image/svg+xml">
+</head>
+
+<body class="in-body">
+
+    <div class="in-app">
+
+        <!-- ===== Menú lateral (en celular se vuelve barra inferior) ===== -->
+        <aside class="in-lateral">
+            <a href="../index.html" class="hw-logo in-logo">
+                <img src="../imagenes/v2/logo.svg" alt="">
+                <span class="hw-logo-texto">huerto<b>.</b>web</span>
+            </a>
+
+            <nav class="barra-nav" aria-label="Menú principal">
+                <a class="nav-item" href="inicio.html">
+                    <i class="bi bi-house"></i>
+                    <span>Inicio</span>
+                </a>
+                <a class="nav-item" href="inventario.html">
+                    <i class="bi bi-flower1"></i>
+                    <span>Cosecha</span>
+                </a>
+                <a class="nav-item nav-item--activo" href="calendario.html" aria-current="page">
+                    <i class="bi bi-calendar3"></i>
+                    <span>Calendario</span>
+                </a>
+                <a class="nav-item" href="perfil.html">
+                    <i class="bi bi-person-fill"></i>
+                    <span>Perfil</span>
+                </a>
+            </nav>
+
+            <a class="in-usuario" href="perfil.html">
+                <span class="in-usuario-inicial" id="lateral-iniciales" aria-hidden="true"></span>
+                <span class="in-usuario-texto">
+                    <strong id="lateral-nombre">Mi cuenta</strong>
+                    <span>Dueño del huerto</span>
+                </span>
+            </a>
+        </aside>
+
+        <!-- ===== Contenido ===== -->
+        <main class="in-contenido pantalla-calendario">
+
+            <!-- ===== Encabezado ===== -->
+            <header class="in-pagina-cabecera cal-encabezado">
+                <div>
+                    <h1 class="in-pagina-titulo cal-titulo">Calendario</h1>
+                    <p class="in-pagina-sub">Riegos, cosechas y entregas de tu huerto.</p>
+                </div>
+                <button class="boton-hoy" type="button" id="btn-hoy" aria-label="Ir a hoy">
+                    <i class="bi bi-calendar-check-fill"></i>
+                    <span>Hoy</span>
+                </button>
+            </header>
+
+            <div class="cal-layout">
+
+                <!-- ===== Calendario ===== -->
+                <section class="cal-tarjeta" aria-label="Calendario del mes">
+                    <div class="cal-nav">
+                        <h2 class="cal-mes" id="cal-mes">Octubre 2026</h2>
+                        <div class="cal-nav__flechas">
+                            <button type="button" id="btn-mes-anterior" aria-label="Mes anterior">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <button type="button" id="btn-mes-siguiente" aria-label="Mes siguiente">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <table class="cal-tabla">
+                        <thead>
+                            <tr>
+                                <th scope="col"><abbr title="Lunes">Lun</abbr></th>
+                                <th scope="col"><abbr title="Martes">Mar</abbr></th>
+                                <th scope="col"><abbr title="Miércoles">Mié</abbr></th>
+                                <th scope="col"><abbr title="Jueves">Jue</abbr></th>
+                                <th scope="col"><abbr title="Viernes">Vie</abbr></th>
+                                <th scope="col"><abbr title="Sábado">Sáb</abbr></th>
+                                <th scope="col"><abbr title="Domingo">Dom</abbr></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cal-cuerpo"></tbody>
+                    </table>
+
+                    <!-- Leyenda de los puntitos -->
+                    <ul class="cal-leyenda">
+                        <li><span class="cal-leyenda__punto cal-leyenda__punto--actividad"></span> Actividad</li>
+                        <li><span class="cal-leyenda__punto cal-leyenda__punto--pedido"></span> Pedido</li>
+                        <li><span class="cal-leyenda__punto cal-leyenda__punto--atrasado"></span> Atrasado</li>
+                        <li><span class="cal-leyenda__punto cal-leyenda__punto--hoy"></span> Hoy</li>
+                    </ul>
+                </section>
+
+                <!-- ===== Actividades del día seleccionado ===== -->
+                <section class="cal-dia-panel" aria-labelledby="titulo-actividades">
+                    <div class="cal-dia-panel__cabecera">
+                        <span class="cal-dia-panel__etiqueta">Día seleccionado</span>
+                        <h2 class="actividades-titulo" id="titulo-actividades">Actividades programadas</h2>
+                    </div>
+
+                    <ul class="lista-programadas" id="lista-programadas"></ul>
+
+                    <!-- ===== Botón + (abre la ventana de Bootstrap) ===== -->
+                    <button class="boton-flotante" type="button" data-bs-toggle="modal" data-bs-target="#modal-actividad"
+                        aria-label="Agregar actividad">
+                        <i class="bi bi-plus-lg"></i>
+                        <span class="boton-flotante__texto">Agregar actividad</span>
+                    </button>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ===== Ventana para agregar una actividad ===== -->
+    <div class="modal fade" id="modal-actividad" tabindex="-1" aria-labelledby="modal-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-huerto">
+                <form id="form-actividad">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="modal-titulo">Nueva actividad</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p class="modal-fecha" id="modal-fecha"></p>
+
+                        <label class="etiqueta-modal" for="tipo-actividad">Actividad</label>
+                        <select class="form-select" id="tipo-actividad" required>
+                            <option value="Riego">Riego</option>
+                            <option value="Fertilizar">Fertilizar</option>
+                            <option value="Siembra">Siembra</option>
+                            <option value="Poda">Poda</option>
+                            <option value="Cosecha">Cosecha</option>
+                            <option value="Revisar plagas">Revisar plagas</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="boton-guardar" type="submit">Guardar actividad</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (necesario para la ventana) y luego nuestro JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ===== MySQL: funciones para hablar con la base ===== -->
+    <script src="../JS/api.js"></script>
+    <script src="../JS/calendario.js"></script>
+    <!-- V2: nombre en el menú lateral -->
+    <script src="../JS/v2-app.js"></script>
+</body>
+
+</html>

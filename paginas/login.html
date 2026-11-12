@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión | Huerto Web</title>
+
+    <!-- Tipografía V2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap"
+        rel="stylesheet">
+
+    <!-- Estás dentro de /paginas, por eso las rutas suben un nivel con ../ -->
+    <link rel="stylesheet" href="../CSS/v2-base.css">
+    <link rel="stylesheet" href="../CSS/login-v2.css">
+    <link rel="stylesheet" href="../CSS/ver-contrasena.css">
+    <link rel="icon" href="../imagenes/v2/logo.svg" type="image/svg+xml">
+</head>
+
+<body class="lg-body">
+
+    <main class="lg-pantalla">
+
+        <!-- ===== Lado izquierdo: ilustración ===== -->
+        <section class="lg-arte" aria-label="Huerto Web">
+            <a href="../index.html" class="hw-logo">
+                <img src="../imagenes/v2/logo.svg" alt="">
+                <span class="hw-logo-texto">huerto<b>.</b>web</span>
+            </a>
+
+            <div class="lg-arte-texto">
+                <h2 class="lg-arte-titulo">Tu huerto<br>te estaba<br><em>esperando.</em></h2>
+                <p class="lg-arte-desc">Entra para revisar tus cultivos, tus pedidos y el mapa del día.</p>
+            </div>
+
+            <!-- login.js usa la clase .planta: si la imagen no carga, pone un emoji -->
+            <img class="planta lg-ilustracion" src="../imagenes/v2/brote-login.svg" alt="Planta brotando de la tierra">
+        </section>
+
+        <!-- ===== Lado derecho: formulario ===== -->
+        <section class="lg-panel">
+            <a href="../index.html" class="lg-volver">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M11 18l-6-6 6-6" />
+                </svg>
+                Volver al inicio
+            </a>
+
+            <div class="lg-encabezado">
+                <h1 class="titulo-login">Iniciar sesión</h1>
+                <p>Elige con qué tipo de cuenta vas a entrar.</p>
+            </div>
+
+            <form class="formulario-login" id="form-login" action="#" method="post">
+
+                <!-- Tipo de usuario con el que se va a entrar -->
+                <div class="campo campo--tipo">
+                    <label for="tipo-usuario">Tipo de usuario</label>
+                    <select id="tipo-usuario" name="tipo-usuario" required>
+                        <option value="" disabled selected>Selecciona tu tipo de usuario</option>
+                        <option value="Dueño del Huerto">Dueño del Huerto</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Repartidor">Repartidor</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com"
+                        autocomplete="email" required>
+                </div>
+
+                <div class="campo">
+                    <label for="contrasena">Contraseña</label>
+                    <input type="password" id="contrasena" name="contrasena" placeholder="Tu contraseña"
+                        autocomplete="current-password" required>
+                </div>
+
+                <a class="olvido" href="#">¿Olvidaste la contraseña?</a>
+
+                <p class="mensaje-error d-none" id="mensaje-error" role="alert">Correo o contraseña incorrectos.</p>
+
+                <button class="boton-login" type="submit">
+                    Iniciar sesión
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                </button>
+
+            </form>
+
+            <p class="lg-registro">¿Todavía no tienes cuenta? <a href="registro.html">Crear cuenta</a></p>
+        </section>
+
+    </main>
+
+    <script src="../JS/api.js"></script>
+    <script src="../JS/login.js"></script>
+    <!-- Ojito para ver la contraseña -->
+    <script src="../JS/ver-contrasena.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repartidor | Huerto Web</title>
+
+    <!-- Tipografía V2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Leaflet (mapa) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <!-- V2: base y el CSS de esta página -->
+    <link rel="stylesheet" href="../CSS/v2-base.css">
+    <link rel="stylesheet" href="../CSS/repartidor-v2.css">
+    <link rel="icon" href="../imagenes/v2/logo.svg" type="image/svg+xml">
+</head>
+
+<body class="rp-body">
+
+    <!-- ===== Barra superior ===== -->
+    <header class="rep-encabezado">
+        <div class="rp-top__izq">
+            <a href="../index.html" class="hw-logo rp-logo">
+                <img src="../imagenes/v2/logo.svg" alt="">
+                <span class="hw-logo-texto">huerto<b>.</b>web</span>
+            </a>
+            <p class="rep-rol"><i class="bi bi-truck"></i> Repartidor</p>
+        </div>
+
+        <h1 class="rep-saludo">¡Hola, <span id="rep-nombre" data-nombre-bonito></span>!</h1>
+
+        <button class="rep-salir" type="button" id="btn-cerrar-sesion" aria-label="Cerrar sesión"
+            title="Cerrar sesión">
+            <i class="bi bi-box-arrow-right"></i>
+            <span class="rep-salir__texto">Salir</span>
+        </button>
+    </header>
+
+    <main class="rep">
+
+        <!-- ===== Columna del mapa ===== -->
+        <div class="rp-col rp-col--mapa">
+            <section class="rep-mapa" aria-labelledby="mapa-titulo">
+                <div class="rep-mapa__cabecera">
+                    <h2 class="rep-mapa__titulo" id="mapa-titulo"><i class="bi bi-map"></i> Mapa de entregas</h2>
+                    <span class="rep-mapa__cuenta" id="mapa-cuenta">0 entregas</span>
+                </div>
+
+                <div class="rep-mapa__lienzo" id="mapa-reparto"></div>
+
+                <div class="rep-mapa__pie">
+                    <ul class="rep-leyenda">
+                        <li><span class="rep-leyenda__punto rep-leyenda__punto--atrasado"></span> Atrasada</li>
+                        <li><span class="rep-leyenda__punto rep-leyenda__punto--hoy"></span> Hoy</li>
+                        <li><span class="rep-leyenda__punto rep-leyenda__punto--manana"></span> Mañana</li>
+                        <li><span class="rep-leyenda__punto rep-leyenda__punto--programado"></span> Próximas</li>
+                        <li><span class="rep-leyenda__punto rep-leyenda__punto--huerto"></span> Huerto</li>
+                    </ul>
+
+                    <p class="rep-mapa__estado" id="mapa-estado">Toca un pin para ver la entrega y cómo llegar.</p>
+
+                    <div class="rep-mapa__acciones">
+                        <button class="rep-btn-mapa" type="button" id="btn-mi-ubicacion">
+                            <i class="bi bi-crosshair"></i> <span>Mi ubicación</span>
+                        </button>
+                        <button class="rep-btn-mapa" type="button" id="btn-ver-todas">
+                            <i class="bi bi-arrows-fullscreen"></i> <span>Ver todas</span>
+                        </button>
+                        <button class="rep-btn-mapa rep-btn-mapa--prim" type="button" id="btn-ruta-hoy">
+                            <i class="bi bi-signpost-split"></i> <span id="ruta-texto">Ruta de hoy</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ===== Columna de entregas ===== -->
+        <div class="rp-col rp-col--lista">
+
+            <!-- ===== Progreso de hoy ===== -->
+            <section class="rep-progreso" aria-labelledby="progreso-titulo">
+                <div class="rep-progreso__cabecera">
+                    <h2 class="rep-progreso__titulo" id="progreso-titulo">Entregas de hoy</h2>
+                    <span class="rep-progreso__texto" id="progreso-texto"></span>
+                </div>
+                <div class="rep-progreso__pista">
+                    <div class="rep-progreso__relleno" id="progreso-barra"></div>
+                </div>
+            </section>
+
+            <!-- ===== Contadores ===== -->
+            <section class="rep-stats" aria-label="Resumen">
+                <article class="rep-stat rep-stat--pendiente">
+                    <span class="rep-stat__icono rep-stat__icono--pendiente"><i class="bi bi-hourglass-split"></i></span>
+                    <p class="rep-stat__numero" id="stat-pendientes">0</p>
+                    <p class="rep-stat__texto">Por entregar</p>
+                </article>
+                <article class="rep-stat rep-stat--atrasado">
+                    <span class="rep-stat__icono rep-stat__icono--atrasado"><i class="bi bi-exclamation-triangle"></i></span>
+                    <p class="rep-stat__numero" id="stat-atrasados">0</p>
+                    <p class="rep-stat__texto">Atrasadas</p>
+                </article>
+                <article class="rep-stat rep-stat--entregado">
+                    <span class="rep-stat__icono rep-stat__icono--entregado"><i class="bi bi-check2-circle"></i></span>
+                    <p class="rep-stat__numero" id="stat-entregados">0</p>
+                    <p class="rep-stat__texto">Entregadas</p>
+                </article>
+            </section>
+
+            <!-- ===== Filtros ===== -->
+            <nav class="rep-filtros" role="tablist" aria-label="Filtrar entregas">
+                <button class="rep-filtro rep-filtro--activo" type="button" role="tab" aria-selected="true"
+                    data-filtro="pendiente">
+                    Pendientes <span class="rep-filtro__cuenta" id="cuenta-pendiente">0</span>
+                </button>
+                <button class="rep-filtro" type="button" role="tab" aria-selected="false" data-filtro="hoy">
+                    Hoy <span class="rep-filtro__cuenta" id="cuenta-hoy">0</span>
+                </button>
+                <button class="rep-filtro" type="button" role="tab" aria-selected="false" data-filtro="entregado">
+                    Entregadas <span class="rep-filtro__cuenta" id="cuenta-entregado">0</span>
+                </button>
+            </nav>
+
+            <!-- ===== Lista de entregas ===== -->
+            <ul class="rep-lista" id="lista-entregas"></ul>
+
+            <p class="rep-vacio" id="entregas-vacio" hidden>
+                <i class="bi bi-box-seam"></i>
+                <span id="entregas-vacio-texto"></span>
+            </p>
+        </div>
+
+    </main>
+
+    <!-- Aviso al marcar una entrega -->
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+    <!-- Leaflet primero; repartidor-mapa.js antes de repartidor.js -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- ===== MySQL: funciones para hablar con la base ===== -->
+    <script src="../JS/api.js"></script>
+    <script src="../JS/repartidor-mapa.js"></script>
+    <script src="../JS/repartidor.js"></script>
+    <!-- V2: nombre con mayúscula inicial -->
+    <script src="../JS/v2-app.js"></script>
+</body>
+
+</html>

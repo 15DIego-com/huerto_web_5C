@@ -1,0 +1,605 @@
+/* ==========================================================
+   HUERTO WEB · V2 — Mi cosecha (paginas/inventario.html)
+   Orden de carga: Bootstrap → v2-base.css → v2-app.css → este
+   Se conservan las clases que usa JS/inventario.js:
+   .cos-producto, .cos-producto__imagen, .cos-producto__emoji,
+   .cos-producto__nombre, .cos-producto__cantidad, .cos-borrar,
+   .cos-kilos, .invalido, .cos-toast--visible
+   ========================================================== */
+
+/* ===== Encabezado ===== */
+.cos-encabezado {
+    margin: 0;
+}
+
+/* Botón "Agregar producto" */
+.cos-agregar {
+    flex: none;
+    min-height: 56px;
+    padding: 0 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+    font-family: var(--hw-fuente);
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.cos-agregar i {
+    font-size: 20px;
+    transition: transform 0.2s ease;
+}
+
+.cos-agregar:hover {
+    background: #163324;
+    transform: translateY(-2px);
+}
+
+/* Formulario abierto: solo el + gira y se vuelve × */
+.cos-agregar[aria-expanded="true"] i {
+    transform: rotate(45deg);
+}
+
+.cos-agregar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.cos-agregar:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 3px;
+}
+
+/* ===== Números de la cosecha ===== */
+.cos-stats {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.4fr;
+    gap: 16px;
+}
+
+.cos-stat {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+    min-height: 150px;
+    padding: 22px 24px;
+    border-radius: 28px;
+    background: var(--hw-crema);
+}
+
+.cos-stat__etiqueta {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.cos-stat__numero {
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 0.95;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--hw-texto-oscuro);
+}
+
+.cos-stat__numero--texto {
+    font-size: clamp(28px, 3vw, 40px);
+    overflow-wrap: anywhere;
+}
+
+/* Tarjeta grande: total en kilos */
+.cos-stat--grande {
+    position: relative;
+    overflow: hidden;
+    background: var(--hw-lima);
+}
+
+.cos-stat--grande .cos-stat__etiqueta {
+    color: #2E4A1A;
+}
+
+.cos-stat--grande .cos-stat__numero {
+    font-size: clamp(48px, 5.6vw, 84px);
+}
+
+/* Canasta decorativa */
+.cos-stat--grande::after {
+    content: "";
+    position: absolute;
+    right: -24px;
+    bottom: -30px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 18px solid rgba(14, 36, 25, 0.08);
+}
+
+.cos-stat--oscuro {
+    background: var(--hw-bosque);
+}
+
+.cos-stat--oscuro .cos-stat__etiqueta {
+    color: #A7BBA9;
+}
+
+.cos-stat--oscuro .cos-stat__numero {
+    color: var(--hw-lima);
+}
+
+/* ===== Aviso: sin huerto ===== */
+.cos-aviso {
+    display: flex;
+    gap: 16px;
+    margin: 0;
+    padding: 22px 24px;
+    border: 1.5px solid #F5C8B5;
+    border-radius: 28px;
+    background: #FFF0E8;
+}
+
+.cos-aviso > i {
+    font-size: 30px;
+    line-height: 1;
+    color: var(--hw-tomate);
+}
+
+.cos-aviso strong {
+    font-size: 19px;
+}
+
+.cos-aviso p {
+    margin: 4px 0 14px;
+    font-size: 16px;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+/* ===== Formulario ===== */
+.cos-form {
+    margin: 0;
+    padding: 24px;
+    border-radius: 28px;
+    background: #ffffff;
+    border: 1.5px solid #DDD6C3;
+    box-shadow: none;
+    animation: cos-aparecer 0.25s ease-out both;
+}
+
+.cos-form__titulo {
+    margin: 0 0 16px;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--hw-texto-oscuro);
+}
+
+.cos-form__campos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.cos-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+}
+
+.cos-campo > span:first-child {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.cos-campo select,
+.cos-kilos {
+    width: 100%;
+    min-height: 54px;
+    border: 1.5px solid #DDD6C3;
+    border-radius: 16px;
+    background: #F7F4EC;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.cos-campo select {
+    padding: 0 16px;
+    font-family: var(--hw-fuente);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--hw-texto-oscuro);
+    outline: none;
+    cursor: pointer;
+}
+
+.cos-campo select:focus,
+.cos-kilos:focus-within {
+    border-color: var(--hw-bosque);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(200, 241, 105, 0.6);
+}
+
+/* Campo de kilos con la unidad pegada */
+.cos-kilos {
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+.cos-kilos input {
+    flex: 1;
+    min-width: 0;
+    padding: 0 16px;
+    border: none;
+    background: transparent;
+    font-family: var(--hw-fuente);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--hw-texto-oscuro);
+    outline: none;
+}
+
+.cos-kilos__unidad {
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    background: var(--hw-bosque);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--hw-lima);
+}
+
+/* Campo con error (lo marca inventario.js) */
+.cos-campo .invalido {
+    border-color: #A3271A;
+    box-shadow: 0 0 0 4px rgba(163, 39, 26, 0.15);
+}
+
+.cos-error {
+    margin: 0 0 12px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: #FBE0DA;
+    font-size: 15px;
+    font-weight: 700;
+    color: #8F1F12;
+}
+
+.cos-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.cos-boton {
+    min-height: 48px;
+    padding: 0 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    font-family: var(--hw-fuente);
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.cos-boton:hover {
+    transform: translateY(-1px);
+}
+
+.cos-boton--prim,
+.cos-boton--prim:hover {
+    min-width: 140px;
+    border: none;
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+    font-weight: 800;
+}
+
+.cos-boton--sec {
+    border-color: #C9C1AC;
+    background: transparent;
+    color: var(--hw-texto-oscuro);
+}
+
+/* ===== Cuadrícula de productos ===== */
+.cos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Cada tarjeta (la crea inventario.js) */
+.cos-producto {
+    --fondo: var(--hw-crema);
+    --circulo: #ffffff;
+    --texto: var(--hw-texto-oscuro);
+    --barra: var(--hw-bosque);
+    --pct: 0;
+
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-height: 250px;
+    padding: 22px 22px 30px;
+    border-radius: 28px;
+    background: var(--fondo);
+    color: var(--texto);
+    text-align: left;
+    box-shadow: none;
+    animation: cos-aparecer 0.3s ease-out both;
+    transition: transform 0.2s ease;
+}
+
+/* Colores que se van alternando */
+.cos-producto:nth-child(4n + 1) {
+    --fondo: var(--hw-lima);
+    --circulo: rgba(255, 255, 255, 0.6);
+}
+
+.cos-producto:nth-child(4n + 2) {
+    --fondo: #FFB49A;
+    --circulo: rgba(255, 255, 255, 0.6);
+}
+
+.cos-producto:nth-child(4n + 3) {
+    --fondo: var(--hw-crema);
+    --circulo: #ffffff;
+}
+
+.cos-producto:nth-child(4n + 4) {
+    --fondo: var(--hw-bosque);
+    --circulo: var(--hw-bosque-2);
+    --texto: var(--hw-texto);
+    --barra: var(--hw-lima);
+}
+
+.cos-producto:hover {
+    transform: translateY(-4px) rotate(-1deg);
+    box-shadow: none;
+}
+
+/* Barrita de proporción (el ancho lo pone inventario-v2.js) */
+.cos-producto::after {
+    content: "";
+    position: absolute;
+    left: 22px;
+    bottom: 16px;
+    /* --pct va de 0 a 1 */
+    width: calc((100% - 44px) * var(--pct));
+    height: 6px;
+    border-radius: 999px;
+    background: var(--barra);
+    opacity: 0.85;
+    transition: width 0.6s ease;
+}
+
+.cos-producto__imagen,
+.cos-producto__emoji {
+    width: 92px;
+    height: 92px;
+    margin: 0 0 10px;
+    padding: 12px;
+    border-radius: 50%;
+    background: var(--circulo);
+    object-fit: contain;
+    transition: transform 0.25s ease;
+}
+
+.cos-producto__emoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    line-height: 1;
+}
+
+.cos-producto:hover .cos-producto__imagen,
+.cos-producto:hover .cos-producto__emoji {
+    transform: scale(1.08) rotate(6deg);
+}
+
+.cos-producto__nombre {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--texto);
+}
+
+.cos-producto__cantidad {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    font-family: var(--hw-fuente);
+    font-size: 40px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--texto);
+}
+
+/* Botón de borrar */
+.cos-borrar {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 14px;
+    background: transparent;
+    font-size: 18px;
+    color: var(--texto);
+    opacity: 0.55;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+.cos-borrar:hover,
+.cos-borrar:focus-visible {
+    opacity: 1;
+    background: #FBE0DA;
+    color: #8F1F12;
+    outline: none;
+}
+
+/* ===== Lista vacía ===== */
+.cos-vacio {
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border-radius: 28px;
+    border: 1.5px dashed #CFC8B5;
+    font-size: 17px;
+    font-weight: 500;
+    text-align: center;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.cos-vacio i {
+    font-size: 40px;
+    color: var(--hw-bosque);
+}
+
+/* ===== Aviso flotante (toast) ===== */
+.cos-toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    z-index: 1100;
+    max-width: calc(100% - 32px);
+    padding: 14px 24px;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    box-shadow: 0 10px 30px rgba(14, 36, 25, 0.3);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--hw-lima);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 16px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.cos-toast--visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+@keyframes cos-aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ==========================================================
+   RESPONSIVO
+   ========================================================== */
+@media (max-width: 900px) {
+    /* El aviso flota encima de la barra inferior */
+    .cos-toast {
+        bottom: 104px;
+    }
+}
+
+@media (max-width: 700px) {
+    .cos-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .cos-stat--grande {
+        grid-column: 1 / -1;
+    }
+
+    .cos-stat {
+        min-height: 120px;
+        padding: 18px 20px;
+        border-radius: 24px;
+    }
+}
+
+@media (max-width: 560px) {
+    /* Solo el + en el botón */
+    .cos-agregar__texto {
+        display: none;
+    }
+
+    .cos-agregar {
+        width: 56px;
+        padding: 0;
+        justify-content: center;
+    }
+
+    .cos-encabezado {
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    .cos-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .cos-producto {
+        min-height: 210px;
+        padding: 16px 16px 26px;
+        border-radius: 24px;
+    }
+
+    .cos-producto::after {
+        left: 16px;
+        width: calc((100% - 32px) * var(--pct));
+    }
+
+    .cos-producto__imagen,
+    .cos-producto__emoji {
+        width: 72px;
+        height: 72px;
+        font-size: 38px;
+    }
+
+    .cos-producto__cantidad {
+        font-size: 30px;
+    }
+
+    .cos-botones .cos-boton {
+        flex: 1;
+    }
+}

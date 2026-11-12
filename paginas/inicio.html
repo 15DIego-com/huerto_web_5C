@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | Huerto Web</title>
+
+    <!-- Tipografía V2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap e íconos primero -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Leaflet (mapa) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <!-- Nuestro CSS: pedidos.css se queda para la lista; inicio-v2.css va al final y manda -->
+    <link rel="stylesheet" href="../CSS/v2-base.css">
+    <link rel="stylesheet" href="../CSS/v2-app.css">
+    <link rel="stylesheet" href="../CSS/pedidos.css">
+    <link rel="stylesheet" href="../CSS/inicio-v2.css">
+    <link rel="icon" href="../imagenes/v2/logo.svg" type="image/svg+xml">
+</head>
+
+<body class="in-body">
+
+    <div class="in-app">
+
+        <!-- ===== Menú lateral (en celular se vuelve barra inferior) ===== -->
+        <aside class="in-lateral">
+            <a href="../index.html" class="hw-logo in-logo">
+                <img src="../imagenes/v2/logo.svg" alt="">
+                <span class="hw-logo-texto">huerto<b>.</b>web</span>
+            </a>
+
+            <nav class="barra-nav" aria-label="Menú principal">
+                <a class="nav-item nav-item--activo" href="inicio.html" aria-current="page">
+                    <i class="bi bi-house"></i>
+                    <span>Inicio</span>
+                </a>
+                <a class="nav-item" href="inventario.html">
+                    <i class="bi bi-flower1"></i>
+                    <span>Cosecha</span>
+                </a>
+                <a class="nav-item" href="calendario.html">
+                    <i class="bi bi-calendar3"></i>
+                    <span>Calendario</span>
+                </a>
+                <a class="nav-item" href="perfil.html">
+                    <i class="bi bi-person-fill"></i>
+                    <span>Perfil</span>
+                </a>
+            </nav>
+
+            <a class="in-usuario" href="perfil.html">
+                <span class="in-usuario-inicial" id="lateral-iniciales" aria-hidden="true"></span>
+                <span class="in-usuario-texto">
+                    <strong id="lateral-nombre">Mi cuenta</strong>
+                    <span>Dueño del huerto</span>
+                </span>
+            </a>
+        </aside>
+
+        <!-- ===== Contenido ===== -->
+        <main class="pantalla-inicio in-contenido">
+
+            <!-- ===== Encabezado ===== -->
+            <header class="encabezado">
+                <div class="in-saludo">
+                    <span class="in-fecha" id="fecha-hoy"></span>
+                    <h1 class="saludo">¡Hola, <span id="nombre-usuario"></span>!</h1>
+                </div>
+                <!-- Iniciales del usuario (las llena inicio.js) -->
+                <a href="perfil.html" class="in-avatar-link" aria-label="Ir a mi perfil">
+                    <span class="avatar--iniciales" id="avatar-usuario"></span>
+                </a>
+            </header>
+
+            <div class="in-fila">
+
+                <!-- ===== Resumen del huerto (se llena desde el perfil) ===== -->
+                <section class="resumen">
+                    <div class="in-resumen-cabecera">
+                        <div>
+                            <h2 class="resumen__titulo">Resumen del huerto</h2>
+                            <p class="in-huerto-nombre" id="huerto-nombre">Mi huerto</p>
+                        </div>
+                        <span class="in-chip" id="huerto-total" hidden></span>
+                    </div>
+                    <div class="resumen__cultivos" id="resumen-cultivos"></div>
+                    <img class="in-resumen-arte" src="../imagenes/v2/semillas-registro.svg" alt="">
+                </section>
+
+                <!-- ===== Mi huerto en el mapa (lo llena inicio-v2.js) ===== -->
+                <section class="in-huerto" aria-labelledby="titulo-mi-huerto">
+                    <div class="in-huerto-mapa" id="mapa-mi-huerto"></div>
+
+                    <!-- Si aún no registra su huerto -->
+                    <div class="in-huerto-vacio" id="huerto-vacio" hidden>
+                        <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                        <p>Todavía no marcas tu huerto en el mapa.</p>
+                        <a class="hw-btn hw-btn--lima" href="registrar-huerto.html">Registrar mi huerto</a>
+                    </div>
+
+                    <div class="in-huerto-ficha">
+                        <span class="in-huerto-ficha-texto">
+                            <strong id="titulo-mi-huerto">Ubicación del huerto</strong>
+                            <span id="huerto-direccion">—</span>
+                        </span>
+                        <a class="in-huerto-btn" href="perfil.html">Ver</a>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== Mis pedidos ===== -->
+            <section class="pedidos" aria-labelledby="pedidos-titulo">
+                <div class="pedidos__cabecera">
+                    <h2 class="pedidos__titulo" id="pedidos-titulo">
+                        Mis pedidos
+                        <span class="pedidos__contador" id="pedidos-contador" hidden>0</span>
+                    </h2>
+                    <button class="pedidos__nuevo" type="button" id="btn-nuevo-pedido"
+                        aria-label="Agregar pedido" aria-expanded="false" aria-controls="form-pedido">
+                        <i class="bi bi-plus-lg"></i>
+                        <span class="in-nuevo-texto">Nuevo pedido</span>
+                    </button>
+                </div>
+
+                <!-- Formulario (oculto hasta tocar el +) -->
+                <form class="pedidos__form" id="form-pedido" hidden novalidate>
+                    <div class="pedidos__fila">
+                        <label class="pedidos__campo">
+                            <span>Cliente</span>
+                            <input type="text" name="cliente" placeholder="Nombre" maxlength="40">
+                        </label>
+                        <label class="pedidos__campo">
+                            <span>Producto</span>
+                            <input type="text" name="producto" list="lista-productos" placeholder="Jitomate"
+                                maxlength="40">
+                            <datalist id="lista-productos"></datalist>
+                        </label>
+                    </div>
+
+                    <div class="pedidos__fila">
+                        <label class="pedidos__campo">
+                            <span>Cantidad</span>
+                            <input type="number" name="cantidad" min="1" step="any" inputmode="decimal"
+                                placeholder="5">
+                        </label>
+                        <label class="pedidos__campo">
+                            <span>Unidad</span>
+                            <select name="unidad">
+                                <option value="kg">kg</option>
+                                <option value="pzas">piezas</option>
+                                <option value="manojos">manojos</option>
+                            </select>
+                        </label>
+                        <label class="pedidos__campo">
+                            <span>Entrega</span>
+                            <input type="date" name="fecha">
+                        </label>
+                    </div>
+
+                    <!-- Ubicación de entrega -->
+                    <div class="pedidos__ubicacion">
+                        <label class="pedidos__campo">
+                            <span>Dirección de entrega</span>
+                            <input type="text" name="direccion" maxlength="120"
+                                placeholder="Calle, colonia, municipio">
+                        </label>
+
+                        <div class="pedidos__mapa" id="mapa-pedido"></div>
+                        <p class="pedidos__mapa-estado" id="mapa-pedido-estado">
+                            Toca el mapa o arrastra el pin para marcar el punto de entrega.
+                        </p>
+
+                        <div class="pedidos__mapa-acciones">
+                            <button class="pedidos__btn pedidos__btn--mapa" type="button" id="btn-pedido-gps">
+                                <i class="bi bi-geo-alt"></i> Mi ubicación
+                            </button>
+                            <button class="pedidos__btn pedidos__btn--mapa" type="button" id="btn-pedido-huerto">
+                                <i class="bi bi-flower1"></i> Mi huerto
+                            </button>
+                            <button class="pedidos__btn pedidos__btn--mapa" type="button" id="btn-pedido-buscar">
+                                <i class="bi bi-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+
+                    <p class="pedidos__error" id="error-pedido" hidden></p>
+
+                    <div class="pedidos__botones">
+                        <button class="pedidos__btn pedidos__btn--sec" type="button" id="btn-cancelar-pedido">
+                            Cancelar
+                        </button>
+                        <button class="pedidos__btn pedidos__btn--prim" type="submit">Guardar pedido</button>
+                    </div>
+                </form>
+
+                <!-- Lista -->
+                <ul class="pedidos__lista" id="lista-pedidos"></ul>
+
+                <!-- Mensaje cuando no hay pedidos -->
+                <p class="pedidos__vacio" id="pedidos-vacio">
+                    <i class="bi bi-basket"></i>
+                    Aún no tienes pedidos. Toca <strong>+</strong> para agregar uno.
+                </p>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Leaflet primero; api.js antes de todos; pedido-mapa.js antes de pedidos.js -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="../JS/api.js"></script>
+    <script src="../JS/inicio.js"></script>
+    <script src="../JS/pedido-mapa.js"></script>
+    <script src="../JS/pedidos.js"></script>
+    <!-- V2: fecha, datos del huerto y mapa pequeño (no cambia nada de los otros JS) -->
+    <script src="../JS/v2-app.js"></script>
+    <script src="../JS/inicio-v2.js"></script>
+</body>
+
+</html>

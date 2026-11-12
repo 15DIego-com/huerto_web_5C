@@ -1,0 +1,1165 @@
+/* ===== Variables ===== */
+:root {
+    --verde-oscuro: #3f5a2c;
+    --oliva: #8a9a12;
+    --verde-resumen: #3a973a;
+    --verde-claro: #9ccc55;
+    --fondo-inicio: #d3dbb8;
+    --crema: #fffdf0;
+    --fondo-pagina: #eef0f5;
+    --naranja: #e67e22;
+    --rojo: #c0392b;
+    --azul: #2f7fb8;
+    --linea: #e3e6cf;
+}
+
+/* ===== Base ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--fondo-pagina);
+    font-family: 'Open Sans', sans-serif;
+    color: #222;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+/* ===== Barra superior ===== */
+.admin-barra {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 24px;
+    background: var(--oliva);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.admin-marca {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+}
+
+.admin-marca i {
+    font-size: 1.4rem;
+}
+
+.admin-marca__nombre {
+    font-family: 'Merriweather', serif;
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+.admin-marca__rol {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.admin-sesion {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-sesion__nombre {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.admin-salir {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.admin-salir:hover {
+    background: var(--rojo);
+    color: #fff;
+}
+
+/* ===== Contenido ===== */
+.admin {
+    width: 100%;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 24px 20px 48px;
+}
+
+.admin__titulo {
+    font-family: 'Merriweather', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--verde-oscuro);
+}
+
+.admin__subtitulo {
+    margin: 4px 0 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+}
+
+/* ===== Pestañas ===== */
+.admin-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 6px;
+    overflow-x: auto;
+    background: var(--fondo-inicio);
+    border-radius: 16px;
+}
+
+.admin-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.admin-tab:hover {
+    background: rgba(255, 255, 255, 0.45);
+}
+
+.admin-tab--activa,
+.admin-tab--activa:hover {
+    background: var(--verde-oscuro);
+    color: #fff;
+}
+
+.panel {
+    animation: aparecer 0.25s ease;
+}
+
+/* ===== Tarjetas ===== */
+.tarjeta {
+    margin-bottom: 16px;
+    padding: 16px 18px;
+    background: var(--crema);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.tarjeta__titulo {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+}
+
+/* ===== Estadísticas ===== */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--crema);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s;
+}
+
+.stat:hover {
+    transform: translateY(-3px);
+}
+
+.stat__icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    font-size: 1.4rem;
+    color: #fff;
+}
+
+.stat__icono--usuarios {
+    background: var(--azul);
+}
+
+.stat__icono--huertos {
+    background: var(--verde-resumen);
+}
+
+.stat__icono--pendientes {
+    background: var(--naranja);
+}
+
+.stat__icono--entregados {
+    background: var(--oliva);
+}
+
+.stat__numero {
+    font-family: 'Merriweather', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1.1;
+    color: #111;
+}
+
+.stat__texto {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #666;
+}
+
+.resumen-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* ===== Barras por tipo ===== */
+.barras {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.barra__cabecera {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.barra__pista {
+    height: 10px;
+    overflow: hidden;
+    background: #ebeed6;
+    border-radius: 999px;
+}
+
+.barra__relleno {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+
+.barra__relleno--dueno {
+    background: var(--verde-resumen);
+}
+
+.barra__relleno--admin {
+    background: var(--azul);
+}
+
+.barra__relleno--repartidor {
+    background: var(--naranja);
+}
+
+/* ===== Pedidos recientes ===== */
+.recientes {
+    list-style: none;
+}
+
+.reciente {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+}
+
+.reciente + .reciente {
+    border-top: 1px solid var(--linea);
+}
+
+.reciente__icono {
+    color: var(--naranja);
+    font-size: 1.1rem;
+}
+
+.reciente__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.reciente__producto {
+    display: block;
+    overflow: hidden;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reciente__detalle {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #777;
+}
+
+.vacio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #777;
+}
+
+.vacio i {
+    font-size: 1.3rem;
+    color: var(--oliva);
+}
+
+/* ===== Herramientas (buscador, filtros, botones) ===== */
+.herramientas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.buscador {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px;
+    background: #fff;
+    border: 1px solid var(--linea);
+    border-radius: 999px;
+    color: var(--oliva);
+}
+
+.buscador:focus-within {
+    border-color: var(--oliva);
+    box-shadow: 0 0 0 3px rgba(138, 154, 18, 0.2);
+}
+
+.buscador input {
+    flex: 1;
+    padding: 9px 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.filtro {
+    padding: 9px 14px;
+    border: 1px solid var(--linea);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+    outline: none;
+    cursor: pointer;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+}
+
+.btn--prim {
+    border: none;
+    background: var(--verde-resumen);
+    color: #fff;
+}
+
+.btn--sec {
+    border: 1px solid #b9bf97;
+    background: transparent;
+    color: #444;
+}
+
+/* ===== Formulario de usuario ===== */
+.form-usuario__campos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.campo span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #555;
+}
+
+.campo input,
+.campo select {
+    padding: 9px 12px;
+    border: 1px solid var(--linea);
+    border-radius: 12px;
+    background: #fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo input:focus,
+.campo select:focus {
+    border-color: var(--oliva);
+    box-shadow: 0 0 0 3px rgba(138, 154, 18, 0.2);
+}
+
+.campo .invalido {
+    border-color: var(--rojo);
+}
+
+.form-error {
+    margin-top: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--rojo);
+}
+
+.form-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+/* ===== Tabla de usuarios ===== */
+.tarjeta--tabla {
+    padding: 6px 6px 10px;
+}
+
+.tabla-scroll {
+    overflow-x: auto;
+}
+
+.tabla {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+}
+
+.tabla th {
+    padding: 12px 14px;
+    border-bottom: 2px solid var(--linea);
+    text-align: left;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #777;
+}
+
+.tabla td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--linea);
+    font-size: 0.8rem;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.tabla tbody tr:hover {
+    background: #f7f6e4;
+}
+
+.tabla__acciones {
+    text-align: right !important;
+}
+
+.fila--inactiva .usuario__nombre,
+.fila--inactiva td:nth-child(2) {
+    color: #999;
+}
+
+.usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.usuario__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--oliva);
+    font-family: 'Merriweather', serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.usuario__nombre {
+    font-weight: 700;
+}
+
+.insignia {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.insignia--dueno {
+    background: #dff0d8;
+    color: #2d6a2d;
+}
+
+.insignia--admin {
+    background: #d9eaf6;
+    color: #1f5f8b;
+}
+
+.insignia--repartidor {
+    background: #fbe6cf;
+    color: #a65a10;
+}
+
+.insignia--activo,
+.insignia--entregado {
+    background: #dff0d8;
+    color: #2d6a2d;
+}
+
+.insignia--inactivo {
+    background: #ececec;
+    color: #777;
+}
+
+.insignia--pendiente {
+    background: #fbe6cf;
+    color: #a65a10;
+}
+
+.insignia--atrasado {
+    background: #f8d9d5;
+    color: var(--rojo);
+}
+
+.acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.icono-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    font-size: 1.1rem;
+    color: #777;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.icono-btn:hover {
+    background: #eef0d8;
+    color: var(--verde-oscuro);
+}
+
+.icono-btn--peligro:hover {
+    background: #f8d9d5;
+    color: var(--rojo);
+}
+
+.protegido {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #999;
+}
+
+.tabla-vacia {
+    padding: 28px 14px !important;
+    text-align: center;
+    color: #888;
+}
+
+.tabla-pie {
+    padding: 10px 14px 0;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #888;
+}
+
+/* ===== Huertos ===== */
+.huertos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 16px;
+}
+
+.huerto {
+    padding: 18px;
+    background: var(--crema);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.huerto:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.huerto--vacio {
+    opacity: 0.8;
+}
+
+.huerto__cabecera {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--linea);
+}
+
+.huerto__propietario {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.huerto__correo {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #777;
+    word-break: break-all;
+}
+
+.huerto__dato {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.huerto__dato i {
+    margin-top: 1px;
+    color: var(--verde-resumen);
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.chip {
+    padding: 3px 11px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--linea);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+}
+
+.huerto__sin {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #888;
+}
+
+/* ===== Lista de pedidos ===== */
+.pedidos-admin {
+    list-style: none;
+}
+
+.pedido-admin {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+}
+
+.pedido-admin + .pedido-admin {
+    border-top: 1px solid var(--linea);
+}
+
+.pedido-admin__icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: #fbe6cf;
+    font-size: 1.1rem;
+    color: var(--naranja);
+}
+
+.pedido-admin__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.pedido-admin__producto {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.pedido-admin__detalle {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #777;
+}
+
+.pedido-admin--entregado .pedido-admin__producto {
+    color: #999;
+    text-decoration: line-through;
+}
+
+/* ===== Aviso ===== */
+.aviso {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    padding: 9px 20px;
+    border-radius: 999px;
+    background: #222;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 10px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 50;
+}
+
+.aviso--visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Pantallas pequeñas ===== */
+@media (max-width: 760px) {
+    .admin-barra {
+        padding: 10px 14px;
+    }
+
+    .admin-sesion__nombre,
+    .admin-salir span {
+        display: none;
+    }
+
+    .admin-marca__rol {
+        display: none;
+    }
+
+    .resumen-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin__titulo {
+        font-size: 1.25rem;
+    }
+}
+/* ===== Mapa del administrador ===== */
+.mapa-barra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.mapa-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.mapa-chip {
+    position: relative;
+}
+
+.mapa-chip input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mapa-chip span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid var(--linea);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #777;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.mapa-chip span:hover {
+    border-color: var(--oliva);
+}
+
+.mapa-chip input:checked + span {
+    border-color: var(--verde-oscuro);
+    background: var(--verde-oscuro);
+    color: #fff;
+}
+
+.mapa-chip input:focus-visible + span {
+    outline: 2px solid var(--oliva);
+    outline-offset: 2px;
+}
+
+.mapa-chip b {
+    padding: 0 7px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.12);
+    font-size: 0.68rem;
+}
+
+.tarjeta--mapa {
+    padding: 12px;
+}
+
+.mapa-admin {
+    position: relative;
+    z-index: 0;
+    height: 480px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #e9e9e9;
+}
+
+.mapa-admin__estado {
+    margin: 10px 4px 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #555;
+}
+
+.mapa-leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin: 10px 4px 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #666;
+}
+
+.mapa-leyenda li {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.mapa-leyenda__punto {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.mapa-leyenda__punto--huerto {
+    background: var(--verde-resumen);
+}
+
+.mapa-leyenda__punto--atrasado {
+    background: var(--rojo);
+}
+
+.mapa-leyenda__punto--hoy {
+    background: var(--naranja);
+}
+
+.mapa-leyenda__punto--manana {
+    background: #d4a017;
+}
+
+.mapa-leyenda__punto--programado {
+    background: var(--azul);
+}
+
+.mapa-leyenda__punto--repartidor {
+    background: #1a73e8;
+}
+
+/* ===== Marcadores del mapa ===== */
+.adm-pin {
+    background: none;
+    border: 0;
+}
+
+/* Pines de entrega */
+.adm-pin--pedido i {
+    display: block;
+    font-size: 30px;
+    line-height: 1;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+.adm-pin--atrasado i {
+    color: var(--rojo);
+}
+
+.adm-pin--hoy i {
+    color: var(--naranja);
+}
+
+.adm-pin--manana i {
+    color: #d4a017;
+}
+
+.adm-pin--programado i,
+.adm-pin--sinfecha i {
+    color: var(--azul);
+}
+
+.adm-pin--entregado i {
+    color: #8a8a8a;
+}
+
+/* Marcadores redondos: huerto y repartidor */
+.adm-pin--insignia span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    font-size: 16px;
+    color: #fff;
+}
+
+.adm-pin--huerto span {
+    background: var(--verde-resumen);
+}
+
+.adm-pin--repartidor span {
+    background: #1a73e8;
+}
+
+.adm-pin--repartidor-viejo span {
+    background: #8a8a8a;
+}
+
+/* Ventanita al tocar un marcador */
+.adm-popup {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+.adm-popup__linea {
+    font-weight: 600;
+    color: #555;
+}
+
+.adm-popup__enlace {
+    display: inline-block;
+    margin-top: 6px;
+    font-weight: 700;
+    color: var(--azul);
+}
+
+@media (max-width: 760px) {
+    .mapa-admin {
+        height: 360px;
+    }
+}
+
+/* ===== Inventario del huerto (pestaña Huertos) ===== */
+.huerto--clic {
+    cursor: pointer;
+}
+
+.huerto__ver {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px 12px;
+    border: 1px dashed #b9bf97;
+    border-radius: 12px;
+    background: transparent;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.huerto__ver:hover {
+    background: #eef0d8;
+}
+
+.huerto__ver i {
+    transition: transform 0.2s;
+}
+
+.huerto__ver[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+
+.huerto-inv {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--linea);
+    cursor: default;
+    animation: aparecer 0.25s ease;
+}
+
+.huerto-inv__lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+    list-style: none;
+}
+
+.huerto-inv__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 10px 6px;
+    border: 1px solid var(--linea);
+    border-radius: 12px;
+    background: #fff;
+    text-align: center;
+}
+
+.huerto-inv__imagen {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.huerto-inv__emoji {
+    height: 40px;
+    font-size: 1.8rem;
+    line-height: 40px;
+}
+
+.huerto-inv__nombre {
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.huerto-inv__kilos {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--verde-resumen);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.huerto-inv__total {
+    margin-top: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-align: right;
+    color: var(--verde-oscuro);
+}
+
+.huerto-inv__estado {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #777;
+}

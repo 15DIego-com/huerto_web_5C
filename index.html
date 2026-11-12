@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huerto Web · Bienvenida</title>
+    <meta name="description" content="Gestión y geolocalización de huertos familiares.">
+
+    <!-- Tipografía -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap"
+        rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="CSS/v2-base.css">
+    <link rel="stylesheet" href="CSS/bienvenida.css">
+    <link rel="icon" href="imagenes/v2/logo.svg" type="image/svg+xml">
+</head>
+
+<body>
+
+    <div class="hw-contenedor">
+
+        <!-- ===== Encabezado ===== -->
+        <header class="bv-header" id="bvHeader">
+            <a href="index.html" class="hw-logo">
+                <img src="imagenes/v2/logo.svg" alt="">
+                <span class="hw-logo-texto">huerto<b>.</b>web</span>
+            </a>
+
+            <button type="button" class="bv-menu-btn" id="bvMenuBtn" aria-label="Abrir menú" aria-expanded="false"
+                aria-controls="bvNav">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                    aria-hidden="true">
+                    <path d="M4 7h16M4 12h16M4 17h16" />
+                </svg>
+            </button>
+
+            <nav class="bv-nav" id="bvNav" aria-label="Secciones">
+                <a href="#funciones">Cómo funciona</a>
+                <a href="#mapa">Mapa de huertos</a>
+                <a href="#usuarios">Para quién es</a>
+            </nav>
+
+            <div class="bv-acciones">
+                <a href="paginas/login.html" class="hw-btn hw-btn--contorno">Iniciar sesión</a>
+                <a href="paginas/registro.html" class="hw-btn hw-btn--lima">Crear cuenta</a>
+            </div>
+        </header>
+
+        <!-- ===== Hero ===== -->
+        <main>
+            <section class="bv-hero">
+                <div class="bv-hero-texto">
+                    <span class="hw-pastilla">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z" />
+                            <circle cx="12" cy="9.5" r="2.5" />
+                        </svg>
+                        Gestión y geolocalización de huertos familiares
+                    </span>
+
+                    <h1 class="bv-hero-titulo">Siembra.<br>Cosecha.<br><em>Ponlo en el mapa.</em></h1>
+
+                    <p class="bv-hero-desc">Registra tu huerto con su ubicación exacta, organiza tus siembras en un
+                        calendario y recibe pedidos que un repartidor lleva hasta la puerta.</p>
+
+                    <div class="bv-hero-botones">
+                        <a href="paginas/registro.html" class="hw-btn hw-btn--lima hw-btn--grande">
+                            Registrar mi huerto
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg>
+                        </a>
+                        <a href="#funciones" class="bv-link-simple">Ver cómo funciona</a>
+                    </div>
+                </div>
+
+                <!-- Mosaico de verduras -->
+                <div class="bv-bento">
+                    <div class="bv-carta bv-carta--tomate">
+                        <span class="bv-carta-etiqueta">Tomate saladette</span>
+                        <img src="imagenes/v2/tomate.svg" alt="Ilustración de un tomate" class="bv-flotar">
+                    </div>
+                    <div class="bv-carta bv-carta--lechuga">
+                        <span class="bv-carta-nombre">Lechuga<br>romana</span>
+                        <img src="imagenes/v2/lechuga.svg" alt="Ilustración de una lechuga">
+                    </div>
+                    <div class="bv-carta bv-carta--zanahoria">
+                        <span class="bv-carta-nombre">Zanahoria</span>
+                        <img src="imagenes/v2/zanahoria.svg" alt="Ilustración de una zanahoria">
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ===== Franja de cultivos ===== -->
+    <div class="bv-franja" aria-hidden="true">
+        <div class="bv-franja-pista" id="bvFranja">
+            <span>Tomate ✶ Lechuga ✶ Chile serrano ✶ Zanahoria ✶ Calabaza ✶ Cilantro ✶ Frijol ✶ Rábano ✶</span>
+        </div>
+    </div>
+
+    <div class="hw-contenedor">
+
+        <!-- ===== Cómo funciona ===== -->
+        <section class="bv-funciones" id="funciones">
+            <div class="bv-encabezado-seccion hw-aparecer">
+                <h2 class="hw-titulo-seccion">Todo tu huerto,<br>de la semilla a la entrega.</h2>
+                <p>Tres pasos y tu huerto queda listo para que tus vecinos te encuentren.</p>
+            </div>
+
+            <div class="bv-pasos">
+                <article class="bv-paso bv-paso--oscuro hw-aparecer">
+                    <span class="bv-paso-num">01</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z" />
+                        <circle cx="12" cy="9.5" r="2.5" />
+                    </svg>
+                    <h3>Ubica tu huerto</h3>
+                    <p>Arrastra el pin o usa el GPS de tu celular. La dirección se llena sola con las coordenadas.</p>
+                </article>
+
+                <article class="bv-paso bv-paso--crema hw-aparecer">
+                    <span class="bv-paso-num">02</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="5" width="18" height="16" rx="3" />
+                        <path d="M3 10h18M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2" />
+                    </svg>
+                    <h3>Planea tus siembras</h3>
+                    <p>Un calendario con riegos, cosechas y entregas. Cada pedido aparece marcado en su día.</p>
+                </article>
+
+                <article class="bv-paso bv-paso--tomate hw-aparecer">
+                    <span class="bv-paso-num">03</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" />
+                        <circle cx="7" cy="18" r="2" />
+                        <circle cx="17" cy="18" r="2" />
+                    </svg>
+                    <h3>Vende y reparte</h3>
+                    <p>Registra pedidos con su punto de entrega. El repartidor ve la ruta del día en su mapa.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- ===== Mapa ===== -->
+        <section class="bv-mapa" id="mapa">
+            <div class="bv-mapa-imagen hw-aparecer">
+                <img src="imagenes/v2/mapa-huertos.svg"
+                    alt="Mapa ilustrado con huertos, entregas y repartidor marcados">
+                <div class="bv-mapa-ficha">
+                    <span class="bv-mapa-ficha-icono" aria-hidden="true">HN</span>
+                    <span>
+                        <strong>Huerto Los Nogales</strong>
+                        <span>Tomate, lechuga, chile · 12 m²</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="bv-mapa-texto hw-aparecer">
+                <h2>Cada huerto con su pin exacto.</h2>
+                <p>Los pines verdes son huertos, los naranjas entregas pendientes y el punto azul es el repartidor en
+                    vivo.</p>
+                <ul class="bv-leyenda">
+                    <li><span class="bv-punto bv-punto--lima" aria-hidden="true"></span>Huertos registrados</li>
+                    <li><span class="bv-punto bv-punto--tomate" aria-hidden="true"></span>Entregas pendientes</li>
+                    <li><span class="bv-punto bv-punto--cielo" aria-hidden="true"></span>Repartidor en camino</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===== Tipos de usuario ===== -->
+        <section class="bv-usuarios" id="usuarios">
+            <h2 class="hw-aparecer">Hecho para tres personas.</h2>
+            <div class="bv-roles">
+                <div class="bv-rol bv-rol--dueno hw-aparecer">
+                    <span class="bv-rol-nombre">Dueño del huerto</span>
+                    <p>Registra su huerto, su cosecha en kilos y los pedidos que recibe.</p>
+                </div>
+                <div class="bv-rol bv-rol--repartidor hw-aparecer">
+                    <span class="bv-rol-nombre">Repartidor</span>
+                    <p>Ve sus entregas en el mapa, abre la ruta y marca cada pedido como entregado.</p>
+                </div>
+                <div class="bv-rol bv-rol--admin hw-aparecer">
+                    <span class="bv-rol-nombre">Administrador</span>
+                    <p>Supervisa usuarios, huertos y pedidos desde un panel con mapa general.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Llamado final ===== -->
+        <section class="bv-cierre">
+            <div class="bv-cierre-caja hw-aparecer">
+                <img src="imagenes/v2/chile.svg" alt="" class="bv-cierre-chile">
+                <h2>Empieza a sembrar hoy.</h2>
+                <a href="paginas/registro.html" class="hw-btn hw-btn--oscuro hw-btn--grande">Crear mi cuenta gratis</a>
+            </div>
+        </section>
+
+        <!-- ===== Pie ===== -->
+        <footer class="bv-footer">
+            <span>huerto.web · Proyecto escolar ITSOEH · <span id="bvAnio">2026</span></span>
+            <span>Hecho con tierra, código y paciencia.</span>
+        </footer>
+    </div>
+
+    <script src="JS/bienvenida.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,697 @@
+/* ==========================================================
+   HUERTO WEB · V2 — Calendario (paginas/calendario.html)
+   Orden de carga: Bootstrap → v2-base.css → v2-app.css → este
+   Se conservan las clases que usa JS/calendario.js:
+   .cal-dia (--otro-mes, --hoy, --seleccionado, --con-actividad,
+   --con-pedido, --pedido-atrasado), .programada (--pedido,
+   --entregado, --atrasado, --vacia), .programada__icono,
+   .programada__texto, .programada__estado, .programada__borrar
+   ========================================================== */
+
+:root {
+    --cal-actividad: #2F8A3B;
+    --cal-pedido: #FF6B3D;
+    --cal-atrasado: #C0392B;
+}
+
+/* ===== Encabezado ===== */
+.cal-encabezado {
+    margin: 0;
+}
+
+/* Botón "Hoy" */
+.boton-hoy {
+    flex: none;
+    min-height: 52px;
+    padding: 0 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1.5px solid var(--hw-bosque);
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--hw-fuente);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--hw-texto-oscuro);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.boton-hoy i {
+    font-size: 18px;
+}
+
+.boton-hoy:hover {
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+}
+
+.boton-hoy:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 3px;
+}
+
+/* ===== Calendario + panel del día ===== */
+.cal-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 16px;
+}
+
+/* ===== Tarjeta del calendario ===== */
+.cal-tarjeta {
+    flex: 3 1 520px;
+    min-width: 0;
+    margin: 0;
+    padding: 24px;
+    border-radius: 32px;
+    background: var(--hw-crema);
+}
+
+.cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 4px 16px;
+}
+
+.cal-mes {
+    margin: 0;
+    font-family: var(--hw-fuente);
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--hw-texto-oscuro);
+}
+
+.cal-nav__flechas {
+    display: flex;
+    gap: 8px;
+}
+
+.cal-nav button {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #ffffff;
+    font-size: 18px;
+    color: var(--hw-texto-oscuro);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.cal-nav button:hover {
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+}
+
+/* Tabla sin líneas: cada día es una pastilla */
+.cal-tabla {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 6px;
+    margin: 0 -6px;
+    width: calc(100% + 12px);
+}
+
+.cal-tabla th,
+.cal-tabla td {
+    padding: 0;
+    border: none;
+    text-align: center;
+}
+
+.cal-tabla th {
+    padding: 0 0 6px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.cal-tabla abbr {
+    text-decoration: none;
+    cursor: default;
+}
+
+/* ===== Días (los crea calendario.js) ===== */
+.cal-dia {
+    position: relative;
+    width: 100%;
+    height: 68px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px 12px;
+    border: 1.5px solid transparent;
+    border-radius: 16px;
+    background: #ffffff;
+    font-family: var(--hw-fuente);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--hw-texto-oscuro);
+    cursor: pointer;
+    transition: transform 0.12s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cal-dia:hover {
+    background: #ffffff;
+    border-color: var(--hw-bosque);
+    transform: translateY(-2px);
+}
+
+.cal-dia:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 2px;
+}
+
+/* Días del mes anterior o siguiente */
+.cal-dia--otro-mes {
+    background: transparent;
+    color: #A8A08A;
+    font-weight: 500;
+}
+
+/* Hoy: lima */
+.cal-dia--hoy,
+.cal-dia--hoy:hover {
+    background: var(--hw-lima);
+    color: var(--hw-texto-oscuro);
+    font-weight: 800;
+}
+
+/* Día seleccionado: oscuro */
+.cal-dia--seleccionado,
+.cal-dia--seleccionado:hover {
+    outline: none;
+    background: var(--hw-bosque);
+    border-color: var(--hw-bosque);
+    color: var(--hw-texto);
+}
+
+/* Hoy y seleccionado a la vez: oscuro con número lima */
+.cal-dia--hoy.cal-dia--seleccionado {
+    color: var(--hw-lima);
+    box-shadow: inset 0 0 0 3px var(--hw-lima);
+}
+
+/* ===== Puntitos =====
+   actividad = ::after (verde), pedido = ::before (naranja / rojo) */
+.cal-dia--con-actividad::after,
+.cal-dia--con-pedido::before {
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    width: 9px;
+    height: 9px;
+    margin: 0;
+    border-radius: 50%;
+}
+
+.cal-dia--con-actividad::after {
+    background: var(--cal-actividad);
+}
+
+.cal-dia--con-pedido::before {
+    background: var(--cal-pedido);
+}
+
+.cal-dia--pedido-atrasado::before {
+    background: var(--cal-atrasado);
+}
+
+/* Si tiene actividad y pedido, quedan uno junto al otro */
+.cal-dia--con-pedido.cal-dia--con-actividad::before {
+    left: 12px;
+    margin: 0;
+}
+
+.cal-dia--con-pedido.cal-dia--con-actividad::after {
+    left: 25px;
+    margin: 0;
+}
+
+/* Sobre fondos oscuros o lima, los puntos llevan borde para verse */
+.cal-dia--seleccionado.cal-dia--con-actividad::after {
+    background: var(--hw-lima);
+}
+
+.cal-dia--hoy.cal-dia--con-actividad::after,
+.cal-dia--hoy.cal-dia--con-pedido::before {
+    box-shadow: 0 0 0 2px #ffffff;
+}
+
+/* ===== Leyenda ===== */
+.cal-leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 8px 20px;
+    margin: 14px 4px 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.cal-leyenda li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cal-leyenda__punto {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.cal-leyenda__punto--actividad { background: var(--cal-actividad); }
+.cal-leyenda__punto--pedido    { background: var(--cal-pedido); }
+.cal-leyenda__punto--atrasado  { background: var(--cal-atrasado); }
+
+.cal-leyenda__punto--hoy {
+    width: 18px;
+    height: 12px;
+    border-radius: 4px;
+    background: var(--hw-lima);
+}
+
+/* ===== Panel del día ===== */
+.cal-dia-panel {
+    flex: 2 1 340px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 26px;
+    border-radius: 32px;
+    background: var(--hw-bosque);
+    color: var(--hw-texto);
+}
+
+.cal-dia-panel__cabecera {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cal-dia-panel__etiqueta {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hw-lima);
+}
+
+/* "Actividades y pedidos (7 de noviembre)" — lo escribe calendario.js */
+.actividades-titulo {
+    margin: 0;
+    font-family: var(--hw-fuente);
+    font-size: clamp(24px, 2.4vw, 32px);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--hw-texto);
+}
+
+/* ===== Lista del día ===== */
+.lista-programadas {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.programada {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 60px;
+    padding: 8px 8px 8px 16px;
+    border-radius: 18px;
+    background: var(--hw-bosque-2);
+    text-align: left;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--hw-texto);
+    animation: cal-aparecer 0.25s ease-out both;
+}
+
+/* Actividad: puntito verde a la izquierda */
+.programada:not(.programada--pedido):not(.programada--vacia)::before {
+    content: "";
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--hw-lima);
+}
+
+/* El nombre de la actividad ocupa el espacio que sobra */
+.programada > span:not(.programada__texto) {
+    flex: 1;
+}
+
+.programada__texto {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Día sin nada */
+.programada--vacia {
+    justify-content: center;
+    min-height: 120px;
+    padding: 20px;
+    border: 1.5px dashed var(--hw-linea);
+    background: transparent;
+    text-align: center;
+    font-weight: 500;
+    color: var(--hw-texto-suave);
+}
+
+/* Botón × para borrar una actividad */
+.programada__borrar,
+.programada__estado {
+    position: static;
+    transform: none;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 14px;
+    background: transparent;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.programada__borrar {
+    color: var(--hw-texto-suave);
+}
+
+.programada__borrar:hover {
+    background: #FBE0DA;
+    color: #8F1F12;
+}
+
+/* ===== Pedidos dentro de la lista ===== */
+.programada--pedido {
+    background: #FFF0E8;
+    color: var(--hw-texto-oscuro);
+}
+
+.programada__icono {
+    position: static;
+    transform: none;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--cal-pedido);
+    font-size: 17px;
+    color: var(--hw-texto-oscuro);
+}
+
+/* Botón para marcar como entregado */
+.programada__estado {
+    font-size: 24px;
+    color: #B5A99A;
+}
+
+.programada__estado:hover {
+    transform: scale(1.1);
+    color: var(--cal-actividad);
+}
+
+.programada--entregado {
+    background: #E8F2DD;
+}
+
+.programada--entregado .programada__icono {
+    background: #BFD9A8;
+}
+
+.programada--entregado .programada__texto {
+    color: #6B7C70;
+    text-decoration: line-through;
+}
+
+.programada--entregado .programada__estado {
+    color: var(--cal-actividad);
+}
+
+.programada--atrasado {
+    background: #FBE0DA;
+}
+
+.programada--atrasado .programada__icono {
+    background: var(--cal-atrasado);
+    color: #ffffff;
+}
+
+.programada--atrasado .programada__texto {
+    color: #8F1F12;
+    font-weight: 700;
+}
+
+/* ===== Botón "Agregar actividad" ===== */
+.boton-flotante {
+    position: static;
+    margin-top: auto;
+    width: 100%;
+    min-height: 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 999px;
+    background: var(--hw-lima);
+    box-shadow: none;
+    font-family: var(--hw-fuente);
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--hw-texto-oscuro);
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.boton-flotante i {
+    font-size: 20px;
+}
+
+.boton-flotante:hover {
+    background: #D8FF85;
+    transform: translateY(-2px);
+}
+
+.boton-flotante:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 3px;
+}
+
+/* ===== Ventana "Nueva actividad" (Bootstrap) ===== */
+.modal-huerto {
+    border: none;
+    border-radius: 28px;
+    background: var(--hw-crema);
+    color: var(--hw-texto-oscuro);
+    font-family: var(--hw-fuente);
+    overflow: hidden;
+}
+
+.modal-huerto .modal-header,
+.modal-huerto .modal-footer {
+    border: none;
+    padding: 24px 26px 8px;
+}
+
+.modal-huerto .modal-footer {
+    padding: 8px 26px 26px;
+}
+
+.modal-huerto .modal-body {
+    padding: 8px 26px;
+}
+
+.modal-huerto .modal-title {
+    font-family: var(--hw-fuente);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--hw-texto-oscuro);
+}
+
+.modal-fecha {
+    display: inline-block;
+    margin: 0 0 16px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--hw-lima);
+}
+
+.etiqueta-modal {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.modal-huerto .form-select {
+    min-height: 54px;
+    padding-left: 16px;
+    border: 1.5px solid #DDD6C3;
+    border-radius: 16px;
+    background-color: #ffffff;
+    font-family: var(--hw-fuente);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--hw-texto-oscuro);
+}
+
+.modal-huerto .form-select:focus {
+    border-color: var(--hw-bosque);
+    box-shadow: 0 0 0 4px rgba(200, 241, 105, 0.6);
+}
+
+.boton-guardar {
+    width: 100%;
+    min-height: 56px;
+    border: none;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    font-family: var(--hw-fuente);
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--hw-lima);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.boton-guardar:hover {
+    background: #163324;
+}
+
+@keyframes cal-aparecer {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* ==========================================================
+   RESPONSIVO
+   ========================================================== */
+@media (max-width: 1100px) {
+    .cal-dia {
+        height: 56px;
+        padding: 8px 10px;
+        font-size: 16px;
+    }
+
+    .cal-dia--con-actividad::after,
+    .cal-dia--con-pedido::before {
+        bottom: 8px;
+        left: 10px;
+    }
+
+    .cal-dia--con-pedido.cal-dia--con-actividad::before { left: 10px; }
+    .cal-dia--con-pedido.cal-dia--con-actividad::after  { left: 22px; }
+}
+
+@media (max-width: 560px) {
+    .boton-hoy span {
+        display: none;
+    }
+
+    .boton-hoy {
+        width: 52px;
+        padding: 0;
+        justify-content: center;
+    }
+
+    .cal-encabezado {
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    .cal-tarjeta,
+    .cal-dia-panel {
+        padding: 16px;
+        border-radius: 26px;
+    }
+
+    .cal-tabla {
+        border-spacing: 3px;
+        margin: 0 -3px;
+        width: calc(100% + 6px);
+    }
+
+    .cal-tabla th {
+        font-size: 11px;
+        letter-spacing: 0;
+    }
+
+    /* En celular el número va centrado y los puntos abajo al centro */
+    .cal-dia {
+        height: 46px;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 15px;
+    }
+
+    .cal-dia--con-actividad::after,
+    .cal-dia--con-pedido::before {
+        width: 6px;
+        height: 6px;
+        bottom: 5px;
+        left: 50%;
+        margin-left: -3px;
+    }
+
+    .cal-dia--con-pedido.cal-dia--con-actividad::before {
+        left: 50%;
+        margin-left: -8px;
+    }
+
+    .cal-dia--con-pedido.cal-dia--con-actividad::after {
+        left: 50%;
+        margin-left: 2px;
+    }
+
+    .cal-leyenda {
+        gap: 6px 14px;
+        font-size: 13px;
+    }
+}

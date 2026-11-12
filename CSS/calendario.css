@@ -1,0 +1,384 @@
+/* ===== Variables ===== */
+:root {
+    --verde-hoy: #27ae60;
+    --linea-tabla: #555;
+}
+
+/* ===== Encabezado (clases nuevas) ===== */
+.cal-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.cal-titulo {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #4e5f2a;
+}
+
+.boton-atras {
+    width: 30px;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: #111;
+    text-decoration: none;
+}
+
+.boton-hoy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background: var(--verde-hoy);
+    font-size: 0.85rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* ===== Tarjeta del calendario (clases nuevas) ===== */
+.cal-tarjeta {
+    margin-bottom: 14px;
+    padding: 8px 10px 10px;
+    background: var(--crema);
+}
+
+.cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.cal-nav button {
+    padding: 0 6px;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    color: #111;
+    cursor: pointer;
+}
+
+.cal-mes {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.cal-tabla {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.cal-tabla th,
+.cal-tabla td {
+    padding: 0;
+    border: 1px solid var(--linea-tabla);
+    text-align: center;
+}
+
+.cal-tabla th {
+    padding: 3px 0;
+    font-size: 0.5rem;
+    font-weight: 700;
+    color: #111;
+}
+
+/* ===== Días del calendario (clases nuevas) ===== */
+.cal-dia {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: #111;
+    cursor: pointer;
+}
+
+.cal-dia:hover {
+    background: #eef3d6;
+}
+
+.cal-dia--otro-mes {
+    color: #a5a5a5;
+}
+
+.cal-dia--hoy {
+    background: var(--verde-resumen);
+    font-weight: 700;
+    color: #fff;
+}
+
+.cal-dia--hoy:hover {
+    background: var(--verde-resumen);
+}
+
+.cal-dia--seleccionado {
+    outline: 2px solid var(--oliva);
+    outline-offset: -2px;
+}
+
+/* Puntito en los días que tienen actividades */
+.cal-dia--con-actividad::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    border-radius: 50%;
+    background: var(--oliva);
+}
+
+.cal-dia--hoy.cal-dia--con-actividad::after {
+    background: #fff;
+}
+
+/* ===== Actividades programadas (clases nuevas) ===== */
+.actividades-titulo {
+    margin: 0 0 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.lista-programadas {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.programada {
+    position: relative;
+    padding: 3px 30px;
+    background: #fff;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.programada--vacia {
+    font-weight: 600;
+    color: #6b6b6b;
+}
+
+.programada__borrar {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 0.9rem;
+    line-height: 1;
+    color: #a83232;
+    cursor: pointer;
+}
+
+/* ===== Botón flotante + (clase nueva) ===== */
+.boton-flotante {
+    position: absolute;
+    right: 18px;
+    bottom: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 50%;
+    background: var(--oliva);
+    font-size: 1.2rem;
+    color: #000;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.boton-flotante:hover {
+    transform: scale(1.08);
+}
+
+/* ===== Ventana "Nueva actividad" (clases nuevas) ===== */
+.modal-huerto {
+    background: var(--fondo-inicio);
+    border: none;
+    border-radius: 20px;
+}
+
+.modal-huerto .modal-header,
+.modal-huerto .modal-footer {
+    border: none;
+}
+
+.modal-huerto .modal-title {
+    font-family: 'Merriweather', serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--verde-oscuro);
+}
+
+.modal-fecha {
+    margin: 0 0 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+}
+
+.etiqueta-modal {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--oliva);
+}
+
+.boton-guardar {
+    width: 100%;
+    padding: 8px 0;
+    border: none;
+    border-radius: 20px;
+    background: #9ccc55;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.boton-guardar:hover {
+    background: #8ab82f;
+}
+
+/* ===== Pedidos en el calendario ===== */
+:root {
+    --naranja-pedido: #e67e22;
+    --rojo-pedido: #c0392b;
+}
+
+/* Puntito de pedido pendiente (el de actividad usa ::after, el de pedido ::before) */
+.cal-dia--con-pedido::before {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    border-radius: 50%;
+    background: var(--naranja-pedido);
+}
+
+.cal-dia--pedido-atrasado::before {
+    background: var(--rojo-pedido);
+}
+
+/* Si el día tiene actividad y pedido, los dos puntos van juntos */
+.cal-dia--con-pedido.cal-dia--con-actividad::before {
+    margin-left: -6px;
+}
+
+.cal-dia--con-pedido.cal-dia--con-actividad::after {
+    margin-left: 1px;
+}
+
+/* En el día de hoy (fondo verde) el punto se ve amarillo */
+.cal-dia--hoy.cal-dia--con-pedido::before {
+    background: #ffd166;
+}
+
+/* Leyenda */
+.cal-leyenda {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.55rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.cal-leyenda li {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cal-leyenda__punto {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.cal-leyenda__punto--actividad {
+    background: var(--oliva);
+}
+
+.cal-leyenda__punto--pedido {
+    background: var(--naranja-pedido);
+}
+
+.cal-leyenda__punto--atrasado {
+    background: var(--rojo-pedido);
+}
+
+/* Pedidos dentro de la lista del día */
+.programada__icono {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+    color: var(--naranja-pedido);
+}
+
+.programada__estado {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    line-height: 1;
+    color: #a3a98c;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.programada__estado:hover {
+    transform: translateY(-50%) scale(1.12);
+}
+
+.programada--entregado .programada__texto {
+    color: #999;
+    text-decoration: line-through;
+}
+
+.programada--entregado .programada__estado {
+    color: var(--verde-check);
+}
+
+.programada--atrasado .programada__texto {
+    color: var(--rojo-pedido);
+}

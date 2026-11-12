@@ -1,0 +1,483 @@
+/* ===== Variables ===== */
+:root {
+    --tarjeta-suave: #e6ecd2;
+    --verde-ajustes: #3a973a;
+    --linea: #7a7a7a;
+    --error: #b3261e;
+}
+
+/* Para que el atributo hidden siempre oculte */
+[hidden] {
+    display: none !important;
+}
+
+/* ===== Encabezado ===== */
+.perfil-encabezado {
+    margin-bottom: 8px;
+}
+
+.perfil-titulo {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #4e5f2a;
+}
+
+/* ===== Usuario ===== */
+.perfil-usuario {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+    padding: 12px;
+    background: var(--tarjeta-suave);
+    border-radius: 16px;
+}
+
+.perfil-foto {
+    flex-shrink: 0;
+}
+
+.avatar--grande {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Iniciales si la foto no carga */
+.avatar-iniciales {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--verde-ajustes);
+    font-family: 'Merriweather', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.perfil-datos {
+    min-width: 0;
+}
+
+.perfil-nombre {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.perfil-correo {
+    margin: 2px 0 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #333;
+    word-break: break-all;
+}
+
+.perfil-insignia {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #fff;
+    font-family: 'Merriweather', serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+}
+
+/* ===== Tarjetas ===== */
+.tarjeta-perfil {
+    margin-bottom: 12px;
+    padding: 12px;
+    background: var(--tarjeta-suave);
+    border-radius: 16px;
+    transition: box-shadow 0.2s;
+}
+
+.tarjeta-perfil:hover,
+.tarjeta-perfil--editando {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.tarjeta-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--linea);
+}
+
+.tarjeta-titulo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.tarjeta-titulo i {
+    font-size: 1rem;
+    color: var(--verde-ajustes);
+}
+
+.boton-editar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border: 1px solid var(--verde-ajustes);
+    border-radius: 999px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--verde-ajustes);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.boton-editar:hover {
+    background: var(--verde-ajustes);
+    color: #fff;
+}
+
+/* ===== Tipo de cultivo (chips) ===== */
+.dato-subtitulo {
+    margin: 0 0 6px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #444;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chip {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+    transition: transform 0.2s, background 0.2s, color 0.2s;
+}
+
+.chip:hover {
+    transform: translateY(-2px);
+    background: var(--verde-ajustes);
+    color: #fff;
+}
+
+.chip--vacio {
+    background: transparent;
+    font-weight: 600;
+    color: #666;
+}
+
+.chip--vacio:hover {
+    transform: none;
+    background: transparent;
+    color: #666;
+}
+
+/* ===== Ubicación (vista) ===== */
+.lista-datos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 0;
+}
+
+.dato-item {
+    padding: 8px 10px;
+    border-radius: 12px;
+    background: #fff;
+    transition: transform 0.2s;
+}
+
+.dato-item:hover {
+    transform: translateY(-2px);
+}
+
+.dato-item--ancho {
+    grid-column: 1 / -1;
+}
+
+.dato-item dt {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 2px;
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.dato-item dt i {
+    color: var(--verde-ajustes);
+}
+
+.dato-item dd {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #111;
+    word-break: break-word;
+}
+
+.dato-item dd:empty::before {
+    content: "Sin registrar";
+    font-weight: 600;
+    color: #888;
+}
+
+/* ===== Formularios de edición ===== */
+.formulario-edicion {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: aparecer 0.25s ease;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.campo span {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.campo input {
+    padding: 7px 10px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo input:focus {
+    border-color: var(--verde-ajustes);
+    box-shadow: 0 0 0 3px rgba(58, 151, 58, 0.2);
+}
+
+.campo input.invalido {
+    border-color: var(--error);
+}
+
+.campo-error {
+    margin: 0;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--error);
+}
+
+.formulario-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.boton-primario,
+.boton-secundario {
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.2s;
+}
+
+.boton-primario {
+    border: none;
+    background: var(--verde-ajustes);
+    color: #fff;
+}
+
+.boton-secundario {
+    border: 1px solid var(--linea);
+    background: transparent;
+    color: #333;
+}
+
+.boton-primario:hover,
+.boton-secundario:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+/* ===== Cerrar sesión ===== */
+.boton-cerrar-sesion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 8px;
+    border: 1px solid var(--linea);
+    border-radius: 16px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #111;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.boton-cerrar-sesion:hover {
+    background: var(--error);
+    border-color: var(--error);
+    color: #fff;
+}
+
+/* ===== Aviso al guardar ===== */
+.aviso {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: #222;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 10px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 50;
+}
+
+.aviso--visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* ===== Mapa del huerto en el perfil ===== */
+.ubicacion-mapa {
+    margin-top: 10px;
+}
+
+.mapa-perfil {
+    position: relative;
+    z-index: 0;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #e9e9e9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.mapa-perfil__coords {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 2px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #444;
+}
+
+.mapa-perfil__coords i {
+    color: var(--verde-ajustes);
+}
+
+.mapa-perfil__acciones {
+    display: flex;
+    gap: 8px;
+}
+
+.boton-mapa-perfil {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 8px;
+    border: 1px solid var(--verde-ajustes);
+    border-radius: 999px;
+    background: var(--verde-ajustes);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.boton-mapa-perfil:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    color: #fff;
+}
+
+.boton-mapa-perfil--sec {
+    background: transparent;
+    color: var(--verde-ajustes);
+}
+
+.boton-mapa-perfil--sec:hover {
+    color: var(--verde-ajustes);
+}
+
+/* Cuando todavía no hay ubicación */
+.mapa-vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 10px;
+    border-radius: 12px;
+    background: #fff;
+    text-align: center;
+}
+
+.mapa-vacio p {
+    margin: 0;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.mapa-vacio i {
+    font-size: 1.6rem;
+    color: var(--oliva);
+}
+
+.mapa-vacio .boton-mapa-perfil {
+    flex: none;
+    padding: 7px 16px;
+}

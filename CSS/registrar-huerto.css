@@ -1,0 +1,174 @@
+/* ===== Variables ===== */
+:root {
+    --verde-guardar: #3a973a;
+    --fondo-formulario: #dfe6c8;
+    --rojo-error: #a83232;
+    --naranja-aviso: #a65a10;
+}
+
+/* ===== Pantalla (extiende .pantalla-inicio de inicio.css) ===== */
+.pantalla-formulario {
+    min-height: 0;
+    padding-bottom: 24px;
+    background: var(--fondo-formulario);
+}
+
+/* ===== Encabezado (clases nuevas) ===== */
+.form-encabezado {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.form-volver {
+    font-size: 1.2rem;
+    line-height: 1;
+    color: #111;
+    text-decoration: none;
+}
+
+.form-titulo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1f2b12;
+}
+
+.form-titulo i {
+    color: var(--verde-guardar);
+}
+
+/* ===== Campos (clases nuevas) ===== */
+.campo-huerto {
+    margin-bottom: 10px;
+}
+
+.etiqueta-huerto {
+    display: block;
+    margin: 0 0 3px 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.entrada-huerto {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: var(--crema);
+    font-family: inherit;
+    font-size: 0.8rem;
+    color: var(--verde-oscuro);
+}
+
+.entrada-huerto:focus {
+    background: var(--crema);
+    box-shadow: 0 0 0 2px var(--oliva);
+}
+
+.coordenadas-fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+/* ===== Mapa (Leaflet) ===== */
+.mapa-huerto {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    height: 270px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #e9e9e9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Estado del mapa: precisión, avisos y errores */
+.mapa-estado {
+    margin: 6px 6px 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #555;
+}
+
+.mapa-estado--ok {
+    color: var(--verde-guardar);
+}
+
+.mapa-estado--aviso {
+    color: var(--naranja-aviso);
+}
+
+.mapa-estado--error {
+    color: var(--rojo-error);
+}
+
+.mapa-acciones {
+    display: flex;
+    gap: 8px;
+}
+
+.boton-mapa {
+    flex: 1;
+    border: 0;
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    background-color: #e3efd9;
+    color: #2f5d2a;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.boton-mapa:hover {
+    background-color: #d3e6c4;
+}
+
+.boton-mapa:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+/* ===== Mensaje y botón (clases nuevas) ===== */
+.mensaje-formulario {
+    min-height: 1.2em;
+    margin: 8px 0 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.mensaje-formulario--error {
+    color: var(--rojo-error);
+}
+
+.mensaje-formulario--exito {
+    color: var(--verde-guardar);
+}
+
+.boton-guardar-huerto {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px 0;
+    border: none;
+    border-radius: 20px;
+    background: var(--verde-guardar);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.boton-guardar-huerto:hover {
+    background: #2f7d2f;
+}

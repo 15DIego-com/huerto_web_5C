@@ -1,0 +1,363 @@
+/* ==========================================================
+   HUERTO WEB · V2 — Iniciar sesión (paginas/login.html)
+   Requiere: CSS/v2-base.css (se enlaza antes que este)
+   Se conservan las clases que usa JS/login.js:
+   .formulario-login, .campo, .campo--tipo, .planta,
+   .planta--emoji, .olvido, .boton-login, .mensaje-error, .d-none
+   ========================================================== */
+
+/* ===== Página ===== */
+.lg-body {
+    min-height: 100vh;
+    background: var(--hw-arena);
+    color: var(--hw-texto-oscuro);
+}
+
+.lg-pantalla {
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px;
+}
+
+/* ===== Lado izquierdo: ilustración ===== */
+.lg-arte {
+    flex: 1 1 460px;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: clamp(24px, 4vw, 48px);
+    border-radius: var(--hw-radio-lg);
+    background: var(--hw-bosque);
+    color: var(--hw-texto);
+}
+
+.lg-arte-texto {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: clamp(8px, 4vh, 48px);
+}
+
+.lg-arte-titulo {
+    font-size: clamp(48px, 6vw, 92px);
+    line-height: 0.92;
+    font-weight: 800;
+    letter-spacing: -0.045em;
+}
+
+.lg-arte-titulo em {
+    font-style: normal;
+    color: var(--hw-lima);
+}
+
+.lg-arte-desc {
+    max-width: 360px;
+    font-size: 18px;
+    color: var(--hw-texto-suave);
+}
+
+/* Ilustración (también es la .planta que revisa login.js) */
+.planta {
+    display: block;
+}
+
+.lg-ilustracion {
+    margin-top: auto;
+    align-self: center;
+    width: min(100%, 460px);
+    /* La tierra llega hasta el borde inferior de la tarjeta */
+    margin-bottom: calc(-1 * clamp(24px, 4vw, 48px) - 2px);
+    animation: lg-crecer 0.9s ease-out both;
+}
+
+@keyframes lg-crecer {
+    from { opacity: 0; transform: translateY(30px) scale(0.96); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* Emoji de respaldo si la imagen no carga (lo crea login.js) */
+.planta--emoji {
+    margin-top: auto;
+    align-self: center;
+    font-size: 8rem;
+    line-height: 1;
+}
+
+/* ===== Lado derecho: panel del formulario ===== */
+.lg-panel {
+    flex: 1 1 420px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 28px;
+    padding: clamp(24px, 5vw, 72px);
+    border-radius: var(--hw-radio-lg);
+    background: var(--hw-crema);
+}
+
+.lg-panel > * {
+    width: 100%;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lg-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.lg-volver svg {
+    width: 18px;
+    height: 18px;
+}
+
+.lg-volver:hover {
+    color: var(--hw-texto-oscuro);
+}
+
+.lg-encabezado {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.titulo-login {
+    font-size: clamp(40px, 4.4vw, 60px);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+.lg-encabezado p {
+    font-size: 17px;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+/* ===== Formulario ===== */
+.formulario-login {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* Cada campo: etiqueta arriba, input abajo.
+   Grid para que el ojito de ver-contrasena.js quede a la derecha del input */
+.campo {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 4px;
+    padding: 12px 18px;
+    background: #ffffff;
+    border: 1.5px solid #DDD6C3;
+    border-radius: var(--hw-radio-sm);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.campo:focus-within {
+    border-color: var(--hw-bosque);
+    box-shadow: 0 0 0 4px rgba(200, 241, 105, 0.6);
+}
+
+.campo label {
+    grid-column: 1 / -1;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.campo input {
+    width: 100%;
+    min-width: 0;
+    min-height: 32px;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--hw-fuente);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--hw-texto-oscuro);
+}
+
+.campo input::placeholder {
+    color: #8C9488;
+}
+
+.campo input,
+.campo select {
+    grid-column: 1;
+}
+
+/* Lo que agregue otro script (como el ojito) va a la derecha */
+.campo > :not(label):not(input):not(select) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+/* ===== Tipo de usuario (desplegable) ===== */
+.campo--tipo {
+    background: var(--hw-bosque);
+    border-color: var(--hw-bosque);
+}
+
+.campo--tipo label {
+    color: var(--hw-lima);
+}
+
+.campo--tipo select {
+    width: 100%;
+    min-height: 32px;
+    padding: 0 30px 0 0;
+    border: none;
+    outline: none;
+    background: transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23C8F169' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 6l5 5 5-5'/></svg>") no-repeat right 2px center / 16px;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: var(--hw-fuente);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--hw-texto);
+    cursor: pointer;
+}
+
+/* Mientras no se elige nada, el texto se ve más claro */
+.campo--tipo select:invalid {
+    color: var(--hw-texto-suave);
+}
+
+.campo--tipo select option {
+    color: #222222;
+    background: #ffffff;
+}
+
+/* ===== Enlace "¿Olvidaste la contraseña?" ===== */
+.olvido {
+    align-self: flex-end;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--hw-texto-oscuro);
+}
+
+.olvido:hover {
+    color: #2F6B45;
+}
+
+/* ===== Botón Iniciar sesión ===== */
+.boton-login {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 60px;
+    border: none;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    font-family: var(--hw-fuente);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--hw-lima);
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.boton-login svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.15s ease;
+}
+
+.boton-login:hover {
+    background: #163324;
+    transform: translateY(-2px);
+}
+
+.boton-login:hover svg {
+    transform: translateX(4px);
+}
+
+.boton-login:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 3px;
+}
+
+/* ===== Mensaje de error ===== */
+.mensaje-error {
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: #FBE0DA;
+    font-size: 15px;
+    font-weight: 700;
+    color: #8F1F12;
+}
+
+.d-none {
+    display: none;
+}
+
+/* ===== Enlace a registro ===== */
+.lg-registro {
+    text-align: center;
+    font-size: 16px;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.lg-registro a {
+    font-weight: 800;
+    color: var(--hw-texto-oscuro);
+}
+
+/* ==========================================================
+   RESPONSIVO
+   ========================================================== */
+@media (max-width: 900px) {
+    .lg-pantalla {
+        gap: 12px;
+        padding: 12px;
+    }
+
+    /* La ilustración queda arriba, más compacta */
+    .lg-arte {
+        flex-basis: 100%;
+        gap: 20px;
+    }
+
+    .lg-arte-titulo {
+        font-size: clamp(40px, 10vw, 64px);
+    }
+
+    .lg-ilustracion {
+        width: min(70%, 300px);
+    }
+
+    .planta--emoji {
+        font-size: 5rem;
+    }
+
+    .lg-panel {
+        flex-basis: 100%;
+    }
+}

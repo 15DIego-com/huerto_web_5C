@@ -1,0 +1,687 @@
+/* ==========================================================
+   HUERTO WEB · V2 — Mi perfil (paginas/perfil.html)
+   Orden de carga: Bootstrap → Leaflet → v2-base.css → v2-app.css → este
+   Se conservan las clases que usan JS/perfil.js y JS/perfil-mapa.js:
+   .chip, .chip--vacio, .tarjeta-perfil--editando, .invalido,
+   .aviso--visible, y los ids de la vista, formularios y mapa.
+   ========================================================== */
+
+:root {
+    --pf-error: #A3271A;
+}
+
+/* ===== Encabezado ===== */
+.perfil-encabezado {
+    margin: 0;
+}
+
+/* ===== Dos columnas ===== */
+.pf-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.pf-col {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pf-col--izq {
+    flex: 1 1 340px;
+}
+
+.pf-col--der {
+    flex: 1.6 1 480px;
+}
+
+/* ==========================================================
+   TARJETA DE IDENTIDAD
+   ========================================================== */
+.perfil-usuario {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    min-height: 330px;
+    margin: 0;
+    padding: 28px;
+    border-radius: 32px;
+    background: var(--hw-bosque);
+    color: var(--hw-texto);
+}
+
+.perfil-foto {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+/* Iniciales grandes */
+.avatar-iniciales {
+    width: 104px;
+    height: 104px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 34px;
+    background: var(--hw-tomate);
+    font-family: var(--hw-fuente);
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--hw-texto-oscuro);
+    transform: rotate(-4deg);
+    transition: transform 0.25s ease;
+}
+
+.perfil-usuario:hover .avatar-iniciales {
+    transform: rotate(3deg) scale(1.04);
+}
+
+.perfil-datos {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    max-width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.perfil-insignia {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--hw-bosque-2);
+    font-family: var(--hw-fuente);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--hw-lima);
+}
+
+.perfil-nombre {
+    margin: 4px 0 0;
+    font-size: clamp(28px, 2.8vw, 40px);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    color: var(--hw-texto);
+    overflow-wrap: anywhere;
+}
+
+.perfil-correo {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--hw-texto-suave);
+    word-break: break-all;
+}
+
+/* Brote decorativo en la esquina */
+.pf-usuario-arte {
+    position: absolute;
+    right: -30px;
+    bottom: -14px;
+    width: 220px;
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+/* ==========================================================
+   TARJETAS (cultivos y ubicación)
+   ========================================================== */
+.tarjeta-perfil {
+    margin: 0;
+    padding: 24px;
+    border-radius: 32px;
+    background: var(--hw-crema);
+    color: var(--hw-texto-oscuro);
+    box-shadow: none;
+    transition: box-shadow 0.2s ease;
+}
+
+.tarjeta-perfil:hover {
+    box-shadow: none;
+}
+
+/* Mientras se edita, la tarjeta se marca con un borde */
+.tarjeta-perfil--editando {
+    box-shadow: inset 0 0 0 2px var(--hw-bosque);
+}
+
+.tarjeta-perfil--lima {
+    background: var(--hw-lima);
+}
+
+.tarjeta-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 18px;
+    padding: 0;
+    border: none;
+}
+
+.tarjeta-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-family: var(--hw-fuente);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--hw-texto-oscuro);
+}
+
+.tarjeta-titulo i {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--hw-bosque);
+    font-size: 18px;
+    color: var(--hw-lima);
+}
+
+/* Botón Editar */
+.boton-editar {
+    min-height: 44px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1.5px solid var(--hw-bosque);
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--hw-fuente);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--hw-texto-oscuro);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.boton-editar:hover {
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+}
+
+.boton-editar:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 3px;
+}
+
+/* ===== Cultivos (chips) ===== */
+.dato-subtitulo {
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2E4A1A;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.65);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--hw-texto-oscuro);
+    text-transform: capitalize;
+    transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover {
+    transform: translateY(-2px) rotate(-2deg);
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+}
+
+.chip--vacio,
+.chip--vacio:hover {
+    padding: 10px 0;
+    background: transparent;
+    font-weight: 500;
+    color: #2E4A1A;
+    transform: none;
+}
+
+/* ===== Ubicación: datos ===== */
+.lista-datos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+}
+
+.dato-item {
+    min-width: 0;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: #ffffff;
+    transition: transform 0.15s ease;
+}
+
+.dato-item:hover {
+    transform: translateY(-2px);
+}
+
+.dato-item--ancho {
+    grid-column: 1 / -1;
+}
+
+.dato-item dt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 4px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.dato-item dt i {
+    color: #2F6B45;
+}
+
+.dato-item dd {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--hw-texto-oscuro);
+    overflow-wrap: anywhere;
+}
+
+.dato-item dd:empty::before {
+    content: "Sin registrar";
+    font-weight: 500;
+    color: #8C9488;
+}
+
+/* ===== Mapa ===== */
+.ubicacion-mapa {
+    margin-top: 16px;
+}
+
+.mapa-perfil {
+    position: relative;
+    z-index: 0;
+    height: 380px;
+    overflow: hidden;
+    border-radius: 24px 24px 0 0;
+    background: #DCE6D0;
+    box-shadow: none;
+}
+
+/* Pie del mapa: coordenadas y botones en una barra oscura */
+.mapa-perfil__pie {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 0 0 24px 24px;
+    background: var(--hw-bosque);
+}
+
+/* Si el mapa no carga (sin internet), la barra queda redonda completa */
+.mapa-perfil[hidden] + .mapa-perfil__pie {
+    border-radius: 24px;
+}
+
+.mapa-perfil__coords {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-family: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--hw-texto-suave);
+}
+
+.mapa-perfil__coords i {
+    color: var(--hw-lima);
+}
+
+.mapa-perfil__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.boton-mapa-perfil {
+    flex: none;
+    min-height: 44px;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1.5px solid var(--hw-lima);
+    border-radius: 999px;
+    background: var(--hw-lima);
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    color: var(--hw-texto-oscuro);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.boton-mapa-perfil:hover {
+    transform: translateY(-1px);
+    background: #D8FF85;
+    color: var(--hw-texto-oscuro);
+}
+
+.boton-mapa-perfil--sec {
+    background: transparent;
+    color: var(--hw-lima);
+}
+
+.boton-mapa-perfil--sec:hover {
+    background: var(--hw-bosque-2);
+    color: var(--hw-lima);
+}
+
+/* Cuando todavía no hay ubicación */
+.mapa-vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px 20px;
+    border-radius: 24px;
+    background: var(--hw-bosque);
+    text-align: center;
+}
+
+.mapa-vacio p {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--hw-texto-suave);
+}
+
+.mapa-vacio i {
+    font-size: 40px;
+    color: var(--hw-lima);
+}
+
+/* ===== Formularios de edición ===== */
+.formulario-edicion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: pf-aparecer 0.25s ease-out both;
+}
+
+.pf-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.campo--ancho {
+    grid-column: 1 / -1;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+}
+
+.campo span {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.tarjeta-perfil--lima .campo span {
+    color: #2E4A1A;
+}
+
+.campo input {
+    min-height: 52px;
+    padding: 0 16px;
+    border: 1.5px solid #DDD6C3;
+    border-radius: 16px;
+    background: #ffffff;
+    font-family: var(--hw-fuente);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--hw-texto-oscuro);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.campo input:focus {
+    border-color: var(--hw-bosque);
+    box-shadow: 0 0 0 4px rgba(200, 241, 105, 0.6);
+}
+
+.tarjeta-perfil--lima .campo input:focus {
+    box-shadow: 0 0 0 4px rgba(14, 36, 25, 0.18);
+}
+
+.campo input.invalido {
+    border-color: var(--pf-error);
+    box-shadow: 0 0 0 4px rgba(163, 39, 26, 0.15);
+}
+
+.campo-error {
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: #FBE0DA;
+    font-size: 15px;
+    font-weight: 700;
+    color: #8F1F12;
+}
+
+.formulario-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.boton-primario,
+.boton-secundario {
+    min-height: 48px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-family: var(--hw-fuente);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.boton-primario {
+    min-width: 130px;
+    border: none;
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+    font-weight: 800;
+}
+
+.boton-secundario {
+    border: 1.5px solid rgba(14, 36, 25, 0.35);
+    background: transparent;
+    color: var(--hw-texto-oscuro);
+}
+
+.boton-primario:hover,
+.boton-secundario:hover {
+    transform: translateY(-1px);
+}
+
+/* ===== Cerrar sesión ===== */
+.boton-cerrar-sesion {
+    width: 100%;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    border: 1.5px solid #D9B7AE;
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--hw-fuente);
+    font-size: 16px;
+    font-weight: 700;
+    color: #8F1F12;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.boton-cerrar-sesion:hover {
+    background: #8F1F12;
+    border-color: #8F1F12;
+    color: #ffffff;
+}
+
+/* ===== Aviso al guardar (toast) ===== */
+.aviso {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    z-index: 1100;
+    max-width: calc(100% - 32px);
+    padding: 14px 24px;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    box-shadow: 0 10px 30px rgba(14, 36, 25, 0.3);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--hw-lima);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 16px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.aviso--visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+@keyframes pf-aparecer {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* ==========================================================
+   RESPONSIVO
+   ========================================================== */
+@media (max-width: 900px) {
+    .aviso {
+        bottom: 104px;
+    }
+
+    /* Una sola columna; "Cerrar sesión" se va hasta el final */
+    .pf-grid {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pf-col {
+        display: contents;
+    }
+
+    .boton-cerrar-sesion {
+        order: 10;
+    }
+
+    .perfil-usuario {
+        min-height: 0;
+    }
+
+    .pf-usuario-arte {
+        width: 160px;
+        opacity: 0.5;
+    }
+}
+
+@media (max-width: 560px) {
+    .perfil-usuario,
+    .tarjeta-perfil {
+        padding: 20px;
+        border-radius: 26px;
+    }
+
+    .avatar-iniciales {
+        width: 84px;
+        height: 84px;
+        border-radius: 28px;
+        font-size: 32px;
+    }
+
+    .perfil-datos {
+        max-width: none;
+    }
+
+    .tarjeta-titulo {
+        font-size: 20px;
+    }
+
+    /* En celular "Editar" queda solo con el lápiz */
+    .boton-editar span {
+        display: none;
+    }
+
+    .boton-editar {
+        width: 44px;
+        padding: 0;
+        justify-content: center;
+    }
+
+    .lista-datos,
+    .pf-form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .mapa-perfil {
+        height: 260px;
+    }
+
+    .mapa-perfil__acciones,
+    .mapa-perfil__acciones .boton-mapa-perfil {
+        width: 100%;
+    }
+
+    .formulario-botones .boton-primario,
+    .formulario-botones .boton-secundario {
+        flex: 1;
+    }
+}

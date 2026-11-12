@@ -1,0 +1,685 @@
+/* ==========================================================
+   HUERTO WEB · V2 — Inicio / Panel del dueño (paginas/inicio.html)
+   Orden de carga: Bootstrap → Leaflet → v2-base.css → v2-app.css → pedidos.css → este
+   El menú lateral y la barra inferior están en v2-app.css
+   Se conservan las clases que usan inicio.js y pedidos.js.
+   ========================================================== */
+
+/* ==========================================================
+   CONTENIDO
+   ========================================================== */
+.pantalla-inicio {
+    flex: 999 1 560px;
+    min-width: 0;
+    max-width: none;
+    min-height: 0;
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+/* ===== Encabezado ===== */
+.encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0;
+    padding: 14px 8px 4px;
+}
+
+.in-saludo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.in-fecha {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.saludo {
+    margin: 0;
+    font-family: var(--hw-fuente);
+    font-size: clamp(36px, 4.4vw, 60px);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--hw-texto-oscuro);
+}
+
+.in-avatar-link {
+    flex: none;
+    text-decoration: none;
+    border-radius: 50%;
+}
+
+.in-avatar-link:focus-visible {
+    outline: 3px solid var(--hw-bosque);
+    outline-offset: 3px;
+}
+
+.avatar--iniciales {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--hw-bosque);
+    font-family: var(--hw-fuente);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--hw-lima);
+    transition: transform 0.15s ease;
+}
+
+.in-avatar-link:hover .avatar--iniciales {
+    transform: scale(1.06);
+}
+
+/* ===== Fila: resumen + mapa ===== */
+.in-fila {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* ===== Resumen del huerto ===== */
+.resumen {
+    flex: 2 1 480px;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 28px;
+    border-radius: 32px;
+    background: var(--hw-lima);
+    color: var(--hw-texto-oscuro);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-height: 300px;
+}
+
+.in-resumen-cabecera {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.resumen__titulo {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2E4A1A;
+}
+
+.in-huerto-nombre {
+    margin: 0;
+    font-size: clamp(30px, 3.2vw, 44px);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+}
+
+.in-chip {
+    flex: none;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Cultivos (los crea inicio.js) */
+.resumen__cultivos {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow: visible;
+    padding: 0;
+    max-width: 62%;
+}
+
+.resumen__cultivo {
+    flex: 0 0 auto;
+    width: 116px;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 10px 12px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.55);
+    text-align: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+/* Quita la línea negra separadora del diseño anterior */
+.resumen__cultivo + .resumen__cultivo {
+    border-left: 0;
+}
+
+.resumen__cultivo:hover {
+    transform: translateY(-4px) rotate(-2deg);
+    background: #ffffff;
+}
+
+.resumen__cultivo img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+}
+
+.resumen__emoji {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    line-height: 1;
+}
+
+.resumen__nombre {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--hw-texto-oscuro);
+    text-transform: capitalize;
+    word-break: break-word;
+}
+
+.resumen__vacio {
+    margin: 0;
+    padding: 8px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2E4A1A;
+}
+
+/* Ilustración decorativa del resumen */
+.in-resumen-arte {
+    position: absolute;
+    right: -20px;
+    bottom: -8px;
+    width: min(44%, 340px);
+    pointer-events: none;
+}
+
+/* ===== Mi huerto en el mapa ===== */
+.in-huerto {
+    flex: 1 1 300px;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    min-height: 300px;
+    border-radius: 32px;
+    background: var(--hw-bosque-2);
+}
+
+.in-huerto-mapa {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+/* Mapa en tonos un poco más suaves para que combine */
+.in-huerto-mapa .leaflet-tile-pane {
+    filter: saturate(0.75) contrast(0.95);
+}
+
+/* Pin personalizado del huerto */
+.in-pin span {
+    display: block;
+    width: 36px;
+    height: 36px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: var(--hw-lima);
+    border: 3px solid var(--hw-bosque);
+    box-shadow: 0 6px 14px rgba(14, 36, 25, 0.35);
+}
+
+.in-huerto-vacio {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 24px 24px 100px;
+    text-align: center;
+    color: var(--hw-texto);
+}
+
+.in-huerto-vacio[hidden] {
+    display: none;
+}
+
+.in-huerto-vacio i {
+    font-size: 40px;
+    color: var(--hw-lima);
+}
+
+.in-huerto-vacio p {
+    margin: 0;
+    font-size: 17px;
+    color: var(--hw-texto-suave);
+}
+
+.in-huerto-ficha {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    z-index: 500; /* encima del mapa de Leaflet */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 20px;
+    background: var(--hw-crema);
+    color: var(--hw-texto-oscuro);
+}
+
+.in-huerto-ficha-texto {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.in-huerto-ficha-texto strong {
+    font-size: 15px;
+}
+
+.in-huerto-ficha-texto span {
+    font-size: 13px;
+    color: var(--hw-texto-oscuro-suave);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.in-huerto-btn {
+    flex: none;
+    min-height: 44px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.in-huerto-btn:hover {
+    color: #ffffff;
+}
+
+/* ==========================================================
+   MIS PEDIDOS
+   ========================================================== */
+.pedidos {
+    margin: 0;
+    padding: 26px;
+    border-radius: 32px;
+    background: var(--hw-crema);
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pedidos__cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0;
+}
+
+.pedidos__titulo {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--hw-fuente);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--hw-texto-oscuro);
+}
+
+.pedidos__contador {
+    min-width: 30px;
+    height: 30px;
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0;
+}
+
+.pedidos__contador[hidden] {
+    display: none;
+}
+
+/* Botón + (con texto en computadora) */
+.pedidos__nuevo {
+    width: auto;
+    height: auto;
+    min-height: 52px;
+    padding: 0 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 999px;
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+    font-family: var(--hw-fuente);
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.pedidos__nuevo i {
+    font-size: 18px;
+    transition: transform 0.2s ease;
+}
+
+.pedidos__nuevo:hover {
+    background: #163324;
+    transform: translateY(-2px);
+}
+
+/* Cuando el formulario está abierto, el + gira y se vuelve × */
+.pedidos__nuevo[aria-expanded="true"] i {
+    transform: rotate(45deg);
+}
+
+.pedidos__nuevo:focus-visible {
+    outline: 3px solid var(--hw-tomate);
+    outline-offset: 3px;
+}
+
+/* ===== Formulario de nuevo pedido ===== */
+.pedidos__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 20px;
+    border-radius: 24px;
+    background: #ffffff;
+    border: 1.5px solid #DDD6C3;
+    animation: in-abrir 0.25s ease-out both;
+}
+
+.pedidos__form[hidden] {
+    display: none;
+}
+
+@keyframes in-abrir {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.pedidos__fila {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.pedidos__campo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 16px;
+    background: #F7F4EC;
+    border: 1.5px solid transparent;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pedidos__campo:focus-within {
+    border-color: var(--hw-bosque);
+    box-shadow: 0 0 0 4px rgba(200, 241, 105, 0.6);
+    background: #ffffff;
+}
+
+.pedidos__campo span {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.pedidos__campo input,
+.pedidos__campo select {
+    width: 100%;
+    min-height: 30px;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font-family: var(--hw-fuente);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--hw-texto-oscuro);
+}
+
+.pedidos__ubicacion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pedidos__mapa {
+    height: 280px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1.5px solid #DDD6C3;
+}
+
+.pedidos__mapa-estado {
+    margin: 0;
+    font-size: 14px;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.pedidos__mapa-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pedidos__error {
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: #FBE0DA;
+    font-size: 15px;
+    font-weight: 700;
+    color: #8F1F12;
+}
+
+.pedidos__error[hidden] {
+    display: none;
+}
+
+.pedidos__botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Botones del formulario */
+.pedidos__btn {
+    min-height: 44px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    font-family: var(--hw-fuente);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.pedidos__btn:hover {
+    transform: translateY(-1px);
+}
+
+.pedidos__btn--mapa {
+    background: #F1F4EC;
+    border-color: #DDE5D2;
+    color: var(--hw-texto-oscuro);
+}
+
+.pedidos__btn--mapa:hover {
+    background: var(--hw-lima);
+}
+
+.pedidos__btn--sec {
+    background: transparent;
+    border-color: #C9C1AC;
+    color: var(--hw-texto-oscuro);
+}
+
+.pedidos__btn--prim {
+    min-width: 160px;
+    background: var(--hw-bosque);
+    color: var(--hw-lima);
+    font-weight: 800;
+}
+
+/* ===== Lista de pedidos (la crea pedidos.js) =====
+   Estilo general para cada <li>; se afina con pedidos.css */
+.pedidos__lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pedidos__lista > li {
+    padding: 14px 18px;
+    border-radius: 20px;
+    background: #ffffff;
+    border: 1.5px solid #EEE8D9;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.pedidos__lista > li:hover {
+    border-color: var(--hw-bosque);
+}
+
+.pedidos__vacio {
+    margin: 0;
+    padding: 28px 16px;
+    display: block;
+    border-radius: 20px;
+    border: 1.5px dashed #CFC8B5;
+    text-align: center;
+    font-size: 16px;
+    color: var(--hw-texto-oscuro-suave);
+}
+
+.pedidos__vacio i {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 34px;
+    color: var(--hw-bosque);
+}
+
+
+/* ==========================================================
+   RESPONSIVO
+   ========================================================== */
+
+/* Tablet y celular (la barra inferior está en v2-app.css) */
+@media (max-width: 900px) {
+    .resumen__cultivos {
+        max-width: none;
+    }
+
+    .in-resumen-arte {
+        opacity: 0.35;
+    }
+}
+
+/* Celular */
+@media (max-width: 560px) {
+    .avatar--iniciales {
+        width: 48px;
+        height: 48px;
+        font-size: 16px;
+    }
+
+    .resumen,
+    .pedidos {
+        padding: 20px;
+        border-radius: 26px;
+    }
+
+    .resumen__cultivo {
+        width: calc(33.33% - 7px);
+    }
+
+    .in-huerto {
+        min-height: 260px;
+        border-radius: 26px;
+    }
+
+    /* En celular el botón muestra solo el + */
+    .in-nuevo-texto {
+        display: none;
+    }
+
+    .pedidos__nuevo {
+        width: 52px;
+        padding: 0;
+        justify-content: center;
+    }
+
+    .pedidos__botones .pedidos__btn {
+        flex: 1;
+    }
+}
